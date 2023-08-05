@@ -1,4 +1,4 @@
-package com.snowlightpay;
+package com.snowlightpay.membership;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

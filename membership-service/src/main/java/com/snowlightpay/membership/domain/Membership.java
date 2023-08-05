@@ -1,4 +1,4 @@
-package com.snowlightpay.domain;
+package com.snowlightpay.membership.domain;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
