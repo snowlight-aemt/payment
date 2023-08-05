@@ -22,4 +22,10 @@ public class MembershipPersistenceAdapter implements RegisterMembershipPort {
                 membershipValid.isMembershipValid(),
                 membershipCorp.isMembershipCorp()));
     }
+
+    @Override
+    public MembershipJpaEntity findMemberByMembershipId(Membership.MembershipId membershipId) {
+        return membershipRepository.findById(Long.parseLong(membershipId.getMembershipId()))
+                                        .orElseThrow(IllegalArgumentException::new);
+    }
 }

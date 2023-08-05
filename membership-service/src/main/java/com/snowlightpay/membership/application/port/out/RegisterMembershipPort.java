@@ -11,4 +11,6 @@ public interface RegisterMembershipPort {
             Membership.MembershipValid membershipValid,
             Membership.MembershipCorp membershipCorp
     );
+
+    MembershipJpaEntity findMemberByMembershipId(Membership.MembershipId membershipId);
 }
