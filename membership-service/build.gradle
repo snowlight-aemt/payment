@@ -2,6 +2,8 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.14'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id("com.palantir.docker") version "0.35.0"
+
 }
 
 group = 'me.snowlightpay.membership'
@@ -48,4 +50,17 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+docker {
+    println(tasks.bootJar.outputs.files)
+
+    // 이미지 이름
+    name rootProject.name+'-'+project.name+':'+version
+    // 어떤 도커 파일
+    dockerfile file('./Dockerfile')
+    // 어떤 파일들을 도커 이미지로 복사
+    files tasks.bootJar.outputs.files
+    // 도커 전달할 인자
+    buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
 }
