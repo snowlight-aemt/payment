@@ -13,4 +13,11 @@ public interface RegisterMembershipPort {
     );
 
     MembershipJpaEntity findMemberByMembershipId(Membership.MembershipId membershipId);
+
+    MembershipJpaEntity modifyMembership(Membership.MembershipId membershipId,
+                                         Membership.MembershipName membershipName,
+                                         Membership.MembershipEmail membershipEmail,
+                                         Membership.MembershipAddress membershipAddress,
+                                         Membership.MembershipValid membershipValid,
+                                         Membership.MembershipCorp membershipCorp);
 }
