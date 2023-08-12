@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'me.snowlightpay.membership'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.3-SNAPSHOT'
 
 java {
     sourceCompatibility = '11'
@@ -29,8 +29,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+
+//    runtimeOnly 'mysql:mysql-connector-java'
     implementation 'com.mysql:mysql-connector-j:8.1.0'
-    implementation 'com.h2database:h2:2.2.220'
+//    implementation 'com.h2database:h2:2.2.220'
 
     compileOnly 'org.projectlombok:lombok'
 //    developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -58,7 +60,7 @@ docker {
     // 이미지 이름
     name rootProject.name+'-'+project.name+':'+version
     // 어떤 도커 파일
-    dockerfile file('./Dockerfile')
+    dockerfile file('../Dockerfile')
     // 어떤 파일들을 도커 이미지로 복사
     files tasks.bootJar.outputs.files
     // 도커 전달할 인자
