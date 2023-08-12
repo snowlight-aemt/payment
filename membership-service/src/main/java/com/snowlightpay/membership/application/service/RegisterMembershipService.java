@@ -1,6 +1,6 @@
 package com.snowlightpay.membership.application.service;
 
-import com.snowlightpay.membership.UseCase;
+import com.snowlightpay.common.UseCase;
 import com.snowlightpay.membership.adapter.out.persistence.MembershipJpaEntity;
 import com.snowlightpay.membership.adapter.out.persistence.MembershipMapper;
 import com.snowlightpay.membership.application.port.in.*;

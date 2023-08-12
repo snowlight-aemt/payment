@@ -1,6 +1,6 @@
 package com.snowlightpay.membership.application.port.in;
 
-import com.snowlightpay.membership.common.SelfValidating;
+import com.snowlightpay.common.SelfValidating;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;

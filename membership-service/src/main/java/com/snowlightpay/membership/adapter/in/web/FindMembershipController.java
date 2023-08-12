@@ -1,6 +1,6 @@
 package com.snowlightpay.membership.adapter.in.web;
 
-import com.snowlightpay.membership.WebAdapter;
+import com.snowlightpay.common.WebAdapter;
 import com.snowlightpay.membership.application.port.in.FindMembershipCommand;
 import com.snowlightpay.membership.application.port.in.FindMembershipUseCase;
 import com.snowlightpay.membership.domain.Membership;

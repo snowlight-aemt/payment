@@ -1,6 +1,6 @@
 package com.snowlightpay.membership.adapter.out.persistence;
 
-import com.snowlightpay.membership.PersistenceAdapter;
+import com.snowlightpay.common.PersistenceAdapter;
 import com.snowlightpay.membership.application.port.out.RegisterMembershipPort;
 import com.snowlightpay.membership.domain.Membership;
 import lombok.RequiredArgsConstructor;

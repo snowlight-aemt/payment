@@ -1,4 +1,4 @@
-package com.snowlightpay.membership;
+package com.snowlightpay.common;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Documented
 @Component
-public @interface UseCase {
+public @interface WebAdapter {
     @AliasFor(annotation = Component.class)
     String value() default "";
 }

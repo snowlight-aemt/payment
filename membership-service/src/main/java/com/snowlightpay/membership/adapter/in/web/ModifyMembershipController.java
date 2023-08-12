@@ -1,14 +1,12 @@
 package com.snowlightpay.membership.adapter.in.web;
 
-import com.snowlightpay.membership.WebAdapter;
+import com.snowlightpay.common.WebAdapter;
 import com.snowlightpay.membership.application.port.in.ModifyMembershipCommand;
 import com.snowlightpay.membership.application.port.in.ModifyMembershipUseCase;
 import com.snowlightpay.membership.domain.Membership;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.NotNull;
 
 @WebAdapter
 @RestController

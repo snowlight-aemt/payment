@@ -39,6 +39,8 @@ dependencies {
 
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
 
+    implementation project(path: ':common')
+
 //    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.10.5'
 //    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-api', version: '2.1.0'
 //    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-core', version: '2.1.0'
