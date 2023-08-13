@@ -6,7 +6,7 @@ plugins {
 
 }
 
-group = 'me.snowlightpay.membership'
+group = 'me.snowlightpay.backing'
 version = '0.0.1-SNAPSHOT'
 
 java {
