@@ -6,9 +6,7 @@ import com.snowlightpay.membership.application.port.in.FindMembershipUseCase;
 import com.snowlightpay.membership.domain.Membership;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @WebAdapter
 @RestController

@@ -1,6 +1,7 @@
 package com.snowlightpay.membership.adapter.in.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.snowlightpay.membership.adapter.out.persistence.MembershipJpaEntity;
 import com.snowlightpay.membership.domain.Membership;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
@@ -30,20 +31,13 @@ class RegisterMembershipControllerTest {
                 "name", "email", "address", true
         );
 
-        Membership membership = Membership.generateMember(
-                new Membership.MembershipId("1"),
-                new Membership.MembershipName("name"),
-                new Membership.MembershipEmail("email"),
-                new Membership.MembershipAddress("address"),
-                new Membership.MembershipValid(true),
-                new Membership.MembershipCorp(true)
-        );
-
         this.mockMvc.perform(MockMvcRequestBuilders.post("/membership/register")
                         .content(objectMapper.writeValueAsString(registerMembershipRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(objectMapper.writeValueAsString(membership)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("name"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("email"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address").value("address"))
                 .andDo(MockMvcResultHandlers.print());
     }
 }

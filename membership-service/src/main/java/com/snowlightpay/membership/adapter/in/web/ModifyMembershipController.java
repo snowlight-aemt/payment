@@ -15,7 +15,7 @@ public class ModifyMembershipController {
     private final ModifyMembershipUseCase modifyMembershipUseCase;
 
     @PostMapping("/membership/modify/{membershipId}")
-    public ResponseEntity<Membership> modifyMembershipByMembershipId(ModifyMembershipRequest modifyMembershipRequest) {
+    public ResponseEntity<Membership> modifyMembershipByMembershipId(@RequestBody ModifyMembershipRequest modifyMembershipRequest) {
         ModifyMembershipCommand command = new ModifyMembershipCommand(modifyMembershipRequest.getMembershipId(),
                                                                         modifyMembershipRequest.getName(),
                                                                         modifyMembershipRequest.getAddress(),
