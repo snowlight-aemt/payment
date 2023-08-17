@@ -10,7 +10,7 @@ import java.util.UUID;
 public class RequestedFirmBankingMapper {
     public RequestFirmBank mapToDomainEntity(RequestedFirmBankingJpaEntity entry, UUID uuid) {
         return RequestFirmBank.generateMember(
-                new RequestFirmBank.FirmBankingId(entry.getFirmBankingId()),
+                new RequestFirmBank.FirmBankingId(entry.getFirmBankingId()+""),
                 new RequestFirmBank.FromBankAccountNumber(entry.getFromBankAccountNumber()),
                 new RequestFirmBank.FromBankName(entry.getFromBankName()),
                 new RequestFirmBank.ToBankAccountNumber(entry.getToBankAccountNumber()),

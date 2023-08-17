@@ -18,10 +18,10 @@ public class RequestFirmBankingController {
     private final RequestFirmBankingUseCase requestFirmBankingUseCase;
     @PostMapping("/banking/firmBanking/request")
     public ResponseEntity<RequestFirmBank> hello(@RequestBody RequestFirmBanking request) {
-        RequestFirmBankingCommand command = new RequestFirmBankingCommand(request.getFirmBankingId(),
+        RequestFirmBankingCommand command = new RequestFirmBankingCommand(
                     request.getFromBankAccountNumber(), request.getFromBankName(),
                     request.getToBankAccountNumber(), request.getToBankName(),
-                    request.getMoneyAmount(), 0);
+                    request.getMoneyAmount());
 
         RequestFirmBank requestFirmBank = requestFirmBankingUseCase.requestFirmBanking(command);
         return ResponseEntity.ok(requestFirmBank);

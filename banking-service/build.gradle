@@ -31,6 +31,7 @@ dependencies {
 
 
     runtimeOnly 'com.mysql:mysql-connector-j:8.1.0'
+//    runtimeOnly 'com.h2database:h2:2.2.220'
     testRuntimeOnly 'com.h2database:h2:2.2.220'
 
 //

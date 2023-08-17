@@ -19,26 +19,29 @@ import java.util.UUID;
 public class RequestedFirmBankingJpaEntity {
     @GeneratedValue
     @Id
-    private String firmBankingId;
+    private Long firmBankingId;
     private String fromBankAccountNumber;
     private String fromBankName;
     private String toBankAccountNumber;
     private String toBankName;
     private int moneyAmount;
     private int firmBankingStatus; // 0 요청 1 완료 2 실패
+    private String uuid;
 
     public RequestedFirmBankingJpaEntity(String fromBankAccountNumber,
                                          String fromBankName,
                                          String toBankAccountNumber,
                                          String toBankName,
                                          int moneyAmount,
-                                         int firmBankingStatus) {
+                                         int firmBankingStatus,
+                                         UUID uuid) {
         this.fromBankAccountNumber = fromBankAccountNumber;
         this.fromBankName = fromBankName;
         this.toBankAccountNumber = toBankAccountNumber;
         this.toBankName = toBankName;
         this.moneyAmount = moneyAmount;
         this.firmBankingStatus = firmBankingStatus;
+        this.uuid = uuid.toString();
     }
 
     @Override

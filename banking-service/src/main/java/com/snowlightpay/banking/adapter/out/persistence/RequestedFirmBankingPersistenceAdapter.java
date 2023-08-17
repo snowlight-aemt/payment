@@ -1,16 +1,36 @@
 package com.snowlightpay.banking.adapter.out.persistence;
 
-import com.snowlightpay.banking.application.port.out.RegisterBankAccountPort;
 import com.snowlightpay.banking.application.port.out.RequestFirmBankPort;
-import com.snowlightpay.banking.domain.RegisterBankAccount;
+import com.snowlightpay.banking.domain.RequestFirmBank;
 import com.snowlightpay.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.UUID;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
 public class RequestedFirmBankingPersistenceAdapter implements RequestFirmBankPort {
+    private final RequestedFirmBankingRepository requestedFirmBankingRepository;
     @Override
-    public void createFirmBanking() {
+    public RequestedFirmBankingJpaEntity createFirmBanking(RequestFirmBank.FromBankName fromBankName,
+                                                           RequestFirmBank.FromBankAccountNumber fromBankAccountNumber,
+                                                           RequestFirmBank.ToBankName toBankName,
+                                                           RequestFirmBank.ToBankAccountNumber toBankAccountNumber,
+                                                           RequestFirmBank.MoneyAmount moneyAmount,
+                                                           RequestFirmBank.FirmBankingStatus firmBankingStatus) {
+        return this.requestedFirmBankingRepository.save(new RequestedFirmBankingJpaEntity(
+                fromBankAccountNumber.getFromBankAccountNumber(),
+                fromBankName.getFromBankName(),
+                toBankAccountNumber.getToBankAccountNumber(),
+                toBankName.getToBankName(),
+                moneyAmount.getMoneyAmount(),
+                firmBankingStatus.getFirmBankingStatus(),
+                UUID.randomUUID()
+        ));
+    }
 
+    @Override
+    public RequestedFirmBankingJpaEntity modifyFirmBanking(RequestedFirmBankingJpaEntity requestedFirmBankingJpaEntity) {
+        return this.requestedFirmBankingRepository.save(requestedFirmBankingJpaEntity);
     }
 }
