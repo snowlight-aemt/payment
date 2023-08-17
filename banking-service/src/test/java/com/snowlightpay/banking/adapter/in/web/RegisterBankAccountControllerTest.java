@@ -38,4 +38,28 @@ class RegisterBankAccountControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.linkedStatusIsValid").value(true))
                 .andDo(MockMvcResultHandlers.print());
     }
+
+    @DisplayName("펌뱅킹 송금 테스트")
+    @Test
+    void test_firm_bank_() throws Exception {
+        RequestFirmBanking request = new RequestFirmBanking("101-111-1111",
+                                                                "신한은행",
+                                                                "202-222-2222",
+                                                                "우리은행",
+                                                                10000);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/banking/firmBanking/request")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firmBankingId").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.fromBankAccountNumber").value("101-111-1111"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.fromBankName").value("신한은행"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.toBankAccountNumber").value("202-222-2222"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.toBankName").value("우리은행"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.moneyAmount").value(10000))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firmBankingStatus").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").exists())
+                .andDo(MockMvcResultHandlers.print());
+    }
 }
