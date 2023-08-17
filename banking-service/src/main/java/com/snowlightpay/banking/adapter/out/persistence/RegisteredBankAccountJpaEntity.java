@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "registered_backing_account")
+@Table(name = "registered_banking_account")
 public class RegisteredBankAccountJpaEntity {
     @GeneratedValue
     @Id
