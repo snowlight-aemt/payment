@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Getter @Setter
@@ -24,17 +25,19 @@ public class MoneyChangingRequestJpaEntity {
     private int changingType;
     private int moneyChangingStatus;
     private LocalDate createAt;
+    private String uuid;
 
     public MoneyChangingRequestJpaEntity(Long targetMembershipId,
                                          int moneyChangingAmount,
                                          int changingType,
                                          int moneyChangingStatus,
-                                         LocalDate createAt) {
+                                         UUID uuid) {
         this.targetMembershipId = targetMembershipId;
         this.moneyChangingAmount = moneyChangingAmount;
         this.changingType = changingType;
         this.moneyChangingStatus = moneyChangingStatus;
-        this.createAt = createAt;
+        this.createAt = LocalDate.now();
+        this.uuid = uuid.toString();
     }
 
     @Override

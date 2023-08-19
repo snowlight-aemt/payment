@@ -5,28 +5,33 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
 
+import java.util.UUID;
+
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MoneyChangingRequest {
     private String moneyChangingRequestId;
     private String targetMembershipId;
     private int moneyChangingAmount;
-    private int moneyChangingStatus;
-    private int changingTypeStatus;
+    private int moneyChangingStatus; // enum. 0 요청, 1 성공, 2 실패
+    private int changingTypeStatus; // enum. 0 증액, 1 감액
+    private UUID uuid;
 
     public static MoneyChangingRequest generateMember (
             MoneyChangingRequestId moneyChangingRequestId,
             TargetMembershipId targetMembershipId,
             MoneyChangingAmount moneyChangingAmount,
             MoneyChangingStatus moneyChangingStatus,
-            ChangingType changingType
+            ChangingType changingType,
+            Uuid uuid
     ) {
         return new MoneyChangingRequest(
                 moneyChangingRequestId.getMoneyChangingRequestId(),
                 targetMembershipId.getTargetMembershipId(),
                 moneyChangingAmount.getMoneyChangingAmount(),
                 moneyChangingStatus.getMoneyChangingStatus(),
-                changingType.getChangingType()
+                changingType.getChangingType(),
+                uuid.getUuid()
         );
     }
 
@@ -54,5 +59,10 @@ public class MoneyChangingRequest {
     public static class ChangingType {
         public ChangingType(int changingType) { this.changingType = changingType; }
         int changingType;
+    }
+    @Value
+    public static class Uuid {
+        public Uuid(UUID uuid) { this.uuid = uuid; }
+        UUID uuid;
     }
 }
