@@ -5,17 +5,11 @@ plugins {
     id("com.palantir.docker") version "0.35.0"
 }
 
-group = 'me.snowlightpay.bankAccount'
+group = 'com.snowlightpay.money'
 version = '0.0.1-SNAPSHOT'
 
 java {
     sourceCompatibility = '11'
-}
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
 }
 
 repositories {
@@ -29,8 +23,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 
-    runtimeOnly 'com.mysql:mysql-connector-j:8.1.0'
-//    runtimeOnly 'com.h2database:h2:2.2.220'
+//    runtimeOnly 'com.mysql:mysql-connector-j:8.1.0'
+    runtimeOnly 'com.h2database:h2:2.2.220'
     testRuntimeOnly 'com.h2database:h2:2.2.220'
 
 //
@@ -45,7 +39,7 @@ dependencies {
     implementation project(path: ':common')
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
 }
 
