@@ -8,6 +8,7 @@
 #    console:
 #      enabled: true
 
+
 springdoc:
   packages-to-scan: com.snowlightpay.money
   default-consumes-media-type: application/json;charset=UTF-8
@@ -17,3 +18,6 @@ springdoc:
     disable-swagger-default-url: true
     display-request-duration: true
     operations-sorter: alpha
+spring:
+  jpa:
+    show-sql: true

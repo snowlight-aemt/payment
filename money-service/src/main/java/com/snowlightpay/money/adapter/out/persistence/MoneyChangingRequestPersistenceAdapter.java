@@ -2,6 +2,7 @@ package com.snowlightpay.money.adapter.out.persistence;
 
 import com.snowlightpay.common.PersistenceAdapter;
 import com.snowlightpay.money.application.port.out.IncreaseMoneyRequestPort;
+import com.snowlightpay.money.domain.MemberMoney;
 import com.snowlightpay.money.domain.MoneyChangingRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -10,7 +11,8 @@ import java.util.UUID;
 @PersistenceAdapter
 @RequiredArgsConstructor
 public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyRequestPort {
-    private final MoneyChangingRequestRepository repository;
+    private final MoneyChangingRequestRepository moneyChangingRequestRepository;
+    private final MemberMoneyRepository memberMoneyRepository;
 
     @Override
     public MoneyChangingRequestJpaEntity createMoneyChanging(MoneyChangingRequest.TargetMembershipId targetMembershipId,
@@ -18,12 +20,30 @@ public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyRequ
                                                              MoneyChangingRequest.ChangingType changingType,
                                                              MoneyChangingRequest.MoneyChangingStatus moneyChangingStatus) {
 
-        return this.repository.save(new MoneyChangingRequestJpaEntity(
+        return this.moneyChangingRequestRepository.save(new MoneyChangingRequestJpaEntity(
                 Long.parseLong(targetMembershipId.getTargetMembershipId()),
                 moneyChangingAmount.getMoneyChangingAmount(),
                 changingType.getChangingType(),
                 moneyChangingStatus.getMoneyChangingStatus(),
                 UUID.randomUUID()
         ));
+    }
+
+    @Override
+    public MoneyChangingRequestJpaEntity modifyMoneyChanging(MoneyChangingRequestJpaEntity moneyChangingRequestJpaEntity) {
+        return this.moneyChangingRequestRepository.save(moneyChangingRequestJpaEntity);
+    }
+
+    @Override
+    public MemberMoneyJpaEntity increaseMemberMoney(MemberMoney.MembershipId membershipId,
+                                                    MemberMoney.Balance balance) {
+        long id = Long.parseLong(membershipId.getMembershipId());
+        MemberMoneyJpaEntity memberMoneyJpaEntity = this.memberMoneyRepository.findByMembershipId(id).orElseGet(() -> {
+                                                        return new MemberMoneyJpaEntity(id, 0);
+                                                    });
+        memberMoneyJpaEntity.increase(balance.getBalance());
+
+        memberMoneyRepository.save(memberMoneyJpaEntity);
+        return memberMoneyJpaEntity;
     }
 }

@@ -51,4 +51,9 @@ public class MoneyChangingRequestJpaEntity {
                 ", createAt=" + createAt +
                 '}';
     }
+
+    public void moneyChangingSuccess() {
+        if (this.moneyChangingStatus == 0)
+            this.moneyChangingStatus = 1;
+    }
 }
