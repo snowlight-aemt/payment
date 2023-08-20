@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegisterBankAccountController {
     private final RegisterBankAccountUseCase registerBankAccountUseCase;
     @PostMapping("/backing/account/register")
-    public ResponseEntity<RegisterBankAccount> hello(@RequestBody RegisterBankAccountRequest request) {
+    public ResponseEntity<RegisterBankAccount> registerBankAccount(@RequestBody RegisterBankAccountRequest request) {
         RegisterBankAccountCommand command = new RegisterBankAccountCommand(request.getMembershipId(),
                                                                             request.getBankName(),
                                                                             request.getBankAccountNumber(),

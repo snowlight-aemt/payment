@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class RegisterMembershipController {
     private final RegisterMembershipUseCase registerMembershipUseCase;
     @PostMapping("/membership/register")
-    public ResponseEntity<Membership> hello(@RequestBody RegisterMembershipRequest request) {
+    public ResponseEntity<Membership> registerMembership(@RequestBody RegisterMembershipRequest request) {
         // request -> command
         RegisterMembershipCommand command = new RegisterMembershipCommand(request.getName(),
                 request.getEmail(),

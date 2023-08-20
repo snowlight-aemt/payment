@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MoneyChangingRequestController {
     private final IncreaseMoneyRequestUseCase increaseMoneyRequestUseCase;
     @PostMapping("/money/increase")
-    public ResponseEntity<MoneyChangingRequest> hello(@RequestBody IncreaseMoneyRequest request) {
+    public ResponseEntity<MoneyChangingRequest> increaseMoneyRequest(@RequestBody IncreaseMoneyRequest request) {
         IncreaseMoneyRequestCommand command = new IncreaseMoneyRequestCommand(request.getTargetMembershipId(),
                                                                                 request.getChangingMoneyAmount());
 

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RequestFirmBankingController {
     private final RequestFirmBankingUseCase requestFirmBankingUseCase;
     @PostMapping("/banking/firmBanking/request")
-    public ResponseEntity<RequestFirmBank> hello(@RequestBody RequestFirmBanking request) {
+    public ResponseEntity<RequestFirmBank> requireFirmBanking(@RequestBody RequestFirmBanking request) {
         RequestFirmBankingCommand command = new RequestFirmBankingCommand(
                     request.getFromBankAccountNumber(), request.getFromBankName(),
                     request.getToBankAccountNumber(), request.getToBankName(),
