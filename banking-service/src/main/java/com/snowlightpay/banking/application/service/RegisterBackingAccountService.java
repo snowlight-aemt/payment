@@ -5,6 +5,8 @@ import com.snowlightpay.banking.adapter.out.persistence.RegisteredBackAccountMap
 import com.snowlightpay.banking.adapter.out.persistence.RegisteredBankAccountJpaEntity;
 import com.snowlightpay.banking.application.port.in.RegisterBankAccountCommand;
 import com.snowlightpay.banking.application.port.in.RegisterBankAccountUseCase;
+import com.snowlightpay.banking.application.port.out.GetMembershipPort;
+import com.snowlightpay.banking.application.port.out.MembershipStatus;
 import com.snowlightpay.banking.application.port.out.RegisterBankAccountInfoPort;
 import com.snowlightpay.banking.application.port.out.RegisterBankAccountPort;
 import com.snowlightpay.banking.domain.RegisterBankAccount;
@@ -19,10 +21,16 @@ public class RegisterBackingAccountService implements RegisterBankAccountUseCase
 
     private final RegisterBankAccountInfoPort registerBankAccountInfoPort;
 
+    private final GetMembershipPort getMembershipPort;
+
     @Override
     public RegisterBankAccount createBankAccount(RegisterBankAccountCommand command) {
 
         // ToDo 맴버쉽 체크 membershipId
+        MembershipStatus membershipStatus = getMembershipPort.getMembership(command.getMembershipId());
+        if (!membershipStatus.isValid()) {
+            return null;
+        }
 
         BankAccount bankAccount = registerBankAccountInfoPort.findRegisterBankAccountInfo(
                 new RegisterBankAccount.BankName(command.getBankName()),
