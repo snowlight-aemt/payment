@@ -21,3 +21,6 @@ springdoc:
 spring:
   jpa:
     show-sql: true
+
+#task:
+#  topic: snowlight.task.topic
