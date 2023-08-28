@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.14'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id("com.palantir.docker") version "0.35.0"
+}
+
+group = 'com.snowlightpay.remittance'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '11'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+
+    runtimeOnly 'com.mysql:mysql-connector-j:8.1.0'
+//    runtimeOnly 'com.h2database:h2:2.2.220'
+    testRuntimeOnly 'com.h2database:h2:2.2.220'
+
+//
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+
+    implementation project(path: ':common')
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.kafka:spring-kafka'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+docker {
+    println(tasks.bootJar.outputs.files)
+
+    // 이미지 이름
+    name rootProject.name+'-'+project.name+':'+version
+    // 어떤 도커 파일
+    dockerfile file('../Dockerfile')
+    // 어떤 파일들을 도커 이미지로 복사
+    files tasks.bootJar.outputs.files
+    // 도커 전달할 인자
+    buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
+}
