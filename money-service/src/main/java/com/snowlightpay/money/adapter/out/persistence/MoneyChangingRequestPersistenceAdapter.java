@@ -1,6 +1,7 @@
 package com.snowlightpay.money.adapter.out.persistence;
 
 import com.snowlightpay.common.PersistenceAdapter;
+import com.snowlightpay.money.application.port.out.CreateMemberMoneyPort;
 import com.snowlightpay.money.application.port.out.IncreaseMoneyRequestPort;
 import com.snowlightpay.money.domain.MemberMoney;
 import com.snowlightpay.money.domain.MoneyChangingRequest;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyRequestPort {
+public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyRequestPort, CreateMemberMoneyPort {
     private final MoneyChangingRequestRepository moneyChangingRequestRepository;
     private final MemberMoneyRepository memberMoneyRepository;
 
@@ -39,11 +40,22 @@ public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyRequ
                                                     MemberMoney.Balance balance) {
         long id = Long.parseLong(membershipId.getMembershipId());
         MemberMoneyJpaEntity memberMoneyJpaEntity = this.memberMoneyRepository.findByMembershipId(id).orElseGet(() -> {
-                                                        return new MemberMoneyJpaEntity(id, 0);
+                                                        return new MemberMoneyJpaEntity(id, 0, "");
                                                     });
         memberMoneyJpaEntity.increase(balance.getBalance());
 
         memberMoneyRepository.save(memberMoneyJpaEntity);
         return memberMoneyJpaEntity;
+    }
+
+    @Override
+    public void createMemberMoney(MemberMoney.MembershipId membershipId, MemberMoney.MoneyAggregateIdentifier aggregateIdentifier) {
+        MemberMoneyJpaEntity entity = new MemberMoneyJpaEntity(
+                Long.parseLong(membershipId.getMembershipId()),
+                0,
+                aggregateIdentifier.getAggregateIdentifier()
+
+        );
+        this.memberMoneyRepository.save(entity);
     }
 }

@@ -4,33 +4,42 @@ import com.snowlightpay.common.CountDownLatchManager;
 import com.snowlightpay.common.RechargingMoneyTask;
 import com.snowlightpay.common.SubTask;
 import com.snowlightpay.common.UseCase;
+import com.snowlightpay.money.adapter.axon.command.MemberMoneyCreatedCommand;
 import com.snowlightpay.money.adapter.out.persistence.MoneyChangingRequestJpaEntity;
 import com.snowlightpay.money.adapter.out.persistence.MoneyChangingRequestMapper;
+import com.snowlightpay.money.application.port.in.CreateMemberMoneyCommand;
+import com.snowlightpay.money.application.port.in.CreateMemberMoneyUseCase;
 import com.snowlightpay.money.application.port.in.IncreaseMoneyRequestCommand;
 import com.snowlightpay.money.application.port.in.IncreaseMoneyRequestUseCase;
-import com.snowlightpay.money.application.port.out.GetMembershipPort;
-import com.snowlightpay.money.application.port.out.IncreaseMoneyRequestPort;
-import com.snowlightpay.money.application.port.out.MembershipStatus;
-import com.snowlightpay.money.application.port.out.SendRechargingMoneyTaskPort;
+import com.snowlightpay.money.application.port.out.*;
 import com.snowlightpay.money.domain.MemberMoney;
 import com.snowlightpay.money.domain.MoneyChangingRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
+@Slf4j
 @UseCase
 @RequiredArgsConstructor
 @Transactional
-public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase {
+public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase, CreateMemberMoneyUseCase {
     private final GetMembershipPort getMembershipPort;
     private final IncreaseMoneyRequestPort increaseMoneyRequestPort;
     private final MoneyChangingRequestMapper moneyChangingRequestMapper;
 
     private final SendRechargingMoneyTaskPort sendRechargingMoneyTaskPort;
     private final CountDownLatchManager countDownLatchManager;
+
+    private final CreateMemberMoneyPort createMemberMoneyPort;
+
+    private final CommandGateway commandGateway;
+
     @Override
     public MoneyChangingRequest increaseMoneyChangingRequest(IncreaseMoneyRequestCommand command) {
         // ToDo MoneyChanging 비즈니스 로직 구현
@@ -144,5 +153,25 @@ public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase 
         }
 
         // 5. Result Consumer
+    }
+
+    @Override
+    public void createMemberMoney(CreateMemberMoneyCommand command) {
+        MemberMoneyCreatedCommand axonCommand = new MemberMoneyCreatedCommand(command.getMemberShipId());
+
+        // Send - Event Queue
+        CompletableFuture<Object> send = this.commandGateway.send(axonCommand);
+        send.whenComplete((result, throwable) -> {
+            if (throwable != null) {
+                log.info("throwable = " + throwable);
+                throw new RuntimeException(throwable);
+            } else {
+                log.info("result = " + result);
+                createMemberMoneyPort.createMemberMoney(
+                        new MemberMoney.MembershipId(command.getMemberShipId()),
+                        new MemberMoney.MoneyAggregateIdentifier(result.toString())
+                );
+            }
+        });
     }
 }
