@@ -16,29 +16,34 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    axonVersion = "4.6.0"
+    axonVersion = "4.6.0"
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-
     runtimeOnly 'com.mysql:mysql-connector-j:8.1.0'
 //    runtimeOnly 'com.h2database:h2:2.2.220'
-    testRuntimeOnly 'com.h2database:h2:2.2.220'
 
-//
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.kafka:spring-kafka'
+
+    implementation project(path: ':common')
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    implementation group: 'org.axonframework', name: 'axon-configuration', version: "$axonVersion"
+    implementation group: 'org.axonframework', name: 'axon-spring-boot-starter', version: "$axonVersion"
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-
-    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
-
-    implementation project(path: ':common')
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'org.springframework.kafka:spring-kafka'
+    testRuntimeOnly 'com.h2database:h2:2.2.220'
 }
 
 test {
