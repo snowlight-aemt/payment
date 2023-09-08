@@ -15,21 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MoneyChangingRequestController {
     private final IncreaseMoneyRequestUseCase increaseMoneyRequestUseCase;
+    private final MoneyChangingResultDetailMapper moneyChangingResultDetailMapper;
+    
     @PostMapping("/money/increase")
-    public ResponseEntity<MoneyChangingRequest> increaseMoneyRequest(@RequestBody IncreaseMoneyRequest request) {
+    public ResponseEntity<MoneyChangingResultDetail> increaseMoneyRequest(@RequestBody IncreaseMoneyRequest request) {
         IncreaseMoneyRequestCommand command = new IncreaseMoneyRequestCommand(request.getTargetMembershipId(),
                                                                                 request.getChangingMoneyAmount());
 
         MoneyChangingRequest moneyChangingRequest = increaseMoneyRequestUseCase.increaseMoneyChangingRequest(command);
-        return ResponseEntity.ok(moneyChangingRequest);
+        return ResponseEntity.ok(moneyChangingResultDetailMapper.mapToMoneyChangingResultDetail(moneyChangingRequest));
     }
 
     @PostMapping("/money/increase-async")
-    public ResponseEntity<MoneyChangingRequest> increaseMoneyRequestAsync(@RequestBody IncreaseMoneyRequest request) {
+    public ResponseEntity<MoneyChangingResultDetail> increaseMoneyRequestAsync(@RequestBody IncreaseMoneyRequest request) {
         IncreaseMoneyRequestCommand command = new IncreaseMoneyRequestCommand(request.getTargetMembershipId(),
                                                                                 request.getChangingMoneyAmount());
 
         MoneyChangingRequest moneyChangingRequest = increaseMoneyRequestUseCase.increaseMoneyChangingRequestAsync(command);
-        return ResponseEntity.ok(moneyChangingRequest);
+        return ResponseEntity.ok(moneyChangingResultDetailMapper.mapToMoneyChangingResultDetail(moneyChangingRequest));
     }
 }
