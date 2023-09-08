@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
 
-@Builder
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class MemberMoneyCreatedCommand extends SelfValidating<MemberMoneyCreatedCommand> {

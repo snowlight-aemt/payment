@@ -19,4 +19,7 @@ public class MemberMoneyCreatedEvent extends SelfValidating<MemberMoneyCreatedCo
         this.memberShipId = memberShipId;
         super.validateSelf();
     }
+
+    public MemberMoneyCreatedEvent() {
+    }
 }

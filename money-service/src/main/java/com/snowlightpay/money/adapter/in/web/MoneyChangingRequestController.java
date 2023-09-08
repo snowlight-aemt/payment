@@ -45,4 +45,12 @@ public class MoneyChangingRequestController {
         CreateMemberMoneyCommand command = new CreateMemberMoneyCommand(createMemberMoney.getMemberShipId());
         createMemberMoneyUseCase.createMemberMoney(command);
     }
+
+    @PostMapping("/money/increase-eda")
+    public void increaseMoneyChangingRequestByEvent(@RequestBody IncreaseMoneyRequest request) {
+        IncreaseMoneyRequestCommand command = new IncreaseMoneyRequestCommand(request.getTargetMembershipId(),
+                                                                                request.getChangingMoneyAmount());
+
+        this.increaseMoneyRequestUseCase.increaseMoneyChangingRequestByEvent(command);
+    }
 }

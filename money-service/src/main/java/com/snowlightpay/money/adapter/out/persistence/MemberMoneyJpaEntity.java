@@ -3,6 +3,7 @@ package com.snowlightpay.money.adapter.out.persistence;
 import com.snowlightpay.money.domain.MemberMoney;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
+@Getter
 @Table(name = "member_money")
 public class MemberMoneyJpaEntity {
     @GeneratedValue

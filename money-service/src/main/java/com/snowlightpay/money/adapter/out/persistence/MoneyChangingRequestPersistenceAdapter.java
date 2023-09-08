@@ -2,16 +2,18 @@ package com.snowlightpay.money.adapter.out.persistence;
 
 import com.snowlightpay.common.PersistenceAdapter;
 import com.snowlightpay.money.application.port.out.CreateMemberMoneyPort;
+import com.snowlightpay.money.application.port.out.GetMemberMoneyPort;
 import com.snowlightpay.money.application.port.out.IncreaseMoneyRequestPort;
 import com.snowlightpay.money.domain.MemberMoney;
 import com.snowlightpay.money.domain.MoneyChangingRequest;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyRequestPort, CreateMemberMoneyPort {
+public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyRequestPort, CreateMemberMoneyPort, GetMemberMoneyPort {
     private final MoneyChangingRequestRepository moneyChangingRequestRepository;
     private final MemberMoneyRepository memberMoneyRepository;
 
@@ -39,9 +41,9 @@ public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyRequ
     public MemberMoneyJpaEntity increaseMemberMoney(MemberMoney.MembershipId membershipId,
                                                     MemberMoney.Balance balance) {
         long id = Long.parseLong(membershipId.getMembershipId());
-        MemberMoneyJpaEntity memberMoneyJpaEntity = this.memberMoneyRepository.findByMembershipId(id).orElseGet(() -> {
-                                                        return new MemberMoneyJpaEntity(id, 0, "");
-                                                    });
+        MemberMoneyJpaEntity memberMoneyJpaEntity = this.memberMoneyRepository.findByMembershipId(id)
+                                                        .stream().findFirst().orElseGet(() ->
+                                                            new MemberMoneyJpaEntity(id, 0, ""));
         memberMoneyJpaEntity.increase(balance.getBalance());
 
         memberMoneyRepository.save(memberMoneyJpaEntity);
@@ -57,5 +59,11 @@ public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyRequ
 
         );
         this.memberMoneyRepository.save(entity);
+    }
+
+    @Override
+    public MemberMoneyJpaEntity getMemberMoney(MemberMoney.MembershipId memberMoneyId) {
+        return this.memberMoneyRepository.findByMembershipId(Long.parseLong(memberMoneyId.getMembershipId()))
+                                            .stream().findFirst().orElseThrow(IllegalAccessError::new);
     }
 }
