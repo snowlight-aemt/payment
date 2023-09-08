@@ -38,3 +38,6 @@ out/
 
 ### docker - mysql ###
 db/
+
+### docker - axon ###
+axon-server-se/
