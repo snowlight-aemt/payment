@@ -13,5 +13,6 @@ public interface RequestFirmBankPort {
                                                     RequestFirmBank.MoneyAmount moneyAmount,
                                                     RequestFirmBank.FirmBankingStatus firmBankingStatus,
                                                     RequestFirmBank.AggregateIdentifier aggregateIdentifier);
+    RequestedFirmBankingJpaEntity getFirmBanking(RequestFirmBank.FirmBankingId firmBankingId);
     RequestedFirmBankingJpaEntity modifyFirmBanking(RequestedFirmBankingJpaEntity requestedFirmBankingJpaEntity);
 }

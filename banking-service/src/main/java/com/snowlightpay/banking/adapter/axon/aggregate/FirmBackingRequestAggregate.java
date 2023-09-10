@@ -1,7 +1,9 @@
 package com.snowlightpay.banking.adapter.axon.aggregate;
 
 import com.snowlightpay.banking.adapter.axon.command.FirmBankingRequestCreatedCommand;
+import com.snowlightpay.banking.adapter.axon.command.FirmBankingUpdatedCommand;
 import com.snowlightpay.banking.adapter.axon.event.FirmBankingRequestCreatedEvent;
+import com.snowlightpay.banking.adapter.axon.event.FirmBankingUpdatedEvent;
 import lombok.Data;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -24,7 +26,7 @@ public class FirmBackingRequestAggregate {
     private String toBankAccountNumber;
     private String toBankName;
     private int moneyAmount;
-//    private int firmBankingStatus; // 0 요청 1 완료 2 실패
+    private int firmBankingStatus; // 0 요청 1 완료 2 실패
 
     @CommandHandler
     public FirmBackingRequestAggregate(FirmBankingRequestCreatedCommand command) {
@@ -33,6 +35,16 @@ public class FirmBackingRequestAggregate {
                                                     command.getToBankAccountNumber(),
                                                     command.getToBankName(),
                                                     command.getMoneyAmount()));
+    }
+
+    @CommandHandler
+    public String update(FirmBankingUpdatedCommand command) {
+        this.id = command.getAggregateIdentifier();
+
+        apply(new FirmBankingUpdatedEvent(command.getFirmBankingId(),
+                command.getAggregateIdentifier(),
+                command.getStatus()));
+        return this.id;
     }
 
     @EventSourcingHandler
@@ -44,6 +56,11 @@ public class FirmBackingRequestAggregate {
         this.toBankAccountNumber = event.getToBankAccountNumber();
         this.toBankName = event.getToBankName();
         this.moneyAmount = event.getMoneyAmount();
+    }
+
+    @EventSourcingHandler
+    public void on(FirmBankingUpdatedEvent event) {
+        this.firmBankingStatus = event.getStatus();
     }
 
     public FirmBackingRequestAggregate() {

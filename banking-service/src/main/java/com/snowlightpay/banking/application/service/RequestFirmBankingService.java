@@ -1,11 +1,14 @@
 package com.snowlightpay.banking.application.service;
 
 import com.snowlightpay.banking.adapter.axon.command.FirmBankingRequestCreatedCommand;
+import com.snowlightpay.banking.adapter.axon.command.FirmBankingUpdatedCommand;
 import com.snowlightpay.banking.adapter.out.external.bank.FirmBankingResult;
 import com.snowlightpay.banking.adapter.out.persistence.RequestedFirmBankingJpaEntity;
 import com.snowlightpay.banking.adapter.out.persistence.RequestedFirmBankingMapper;
 import com.snowlightpay.banking.application.port.in.RequestFirmBankingCommand;
 import com.snowlightpay.banking.application.port.in.RequestFirmBankingUseCase;
+import com.snowlightpay.banking.application.port.in.UpdateFirmBankingCommand;
+import com.snowlightpay.banking.application.port.in.UpdateFirmBankingUseCase;
 import com.snowlightpay.banking.application.port.out.RequestExternalFirmBankPort;
 import com.snowlightpay.banking.application.port.out.RequestFirmBankPort;
 import com.snowlightpay.banking.domain.RequestFirmBank;
@@ -19,7 +22,7 @@ import java.util.UUID;
 @Slf4j
 @UseCase
 @RequiredArgsConstructor
-public class RequestFirmBankingService implements RequestFirmBankingUseCase {
+public class RequestFirmBankingService implements RequestFirmBankingUseCase, UpdateFirmBankingUseCase {
     private final RequestFirmBankPort requestFirmBankPort;
     private final RequestExternalFirmBankPort requestExtelnalPort;
     private final RequestedFirmBankingMapper requestedFirmBankingMapper;
@@ -109,6 +112,25 @@ public class RequestFirmBankingService implements RequestFirmBankingUseCase {
 
                 // 4. 결과 리턴
                 requestFirmBankPort.modifyFirmBanking(entity);
+            }
+        });
+    }
+
+    @Override
+    public void updateFirmBanking(UpdateFirmBankingCommand command) {
+        RequestFirmBank.FirmBankingId firmBankingId = new RequestFirmBank.FirmBankingId(command.getFirmBankingId());
+        RequestedFirmBankingJpaEntity firmBanking = this.requestFirmBankPort.getFirmBanking(firmBankingId);
+
+        FirmBankingUpdatedCommand axonCommand = new FirmBankingUpdatedCommand(command.getFirmBankingId(),
+                                                                                firmBanking.getAggregateIdentifier(),
+                                                                                command.getStatus());
+
+        this.commandGateway.send(axonCommand).whenComplete((result, throwable) -> {
+            if (throwable != null) {
+                throwable.printStackTrace();
+            } else {
+                firmBanking.setFirmBankingStatus(command.getStatus());
+                this.requestFirmBankPort.modifyFirmBanking(firmBanking);
             }
         });
     }

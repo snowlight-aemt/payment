@@ -32,6 +32,12 @@ public class RequestedFirmBankingPersistenceAdapter implements RequestFirmBankPo
     }
 
     @Override
+    public RequestedFirmBankingJpaEntity getFirmBanking(RequestFirmBank.FirmBankingId firmBankingId) {
+        return requestedFirmBankingRepository.findById(Long.parseLong(firmBankingId.getFirmBankingId()))
+                                                .orElseThrow(IllegalAccessError::new);
+    }
+
+    @Override
     public RequestedFirmBankingJpaEntity modifyFirmBanking(RequestedFirmBankingJpaEntity requestedFirmBankingJpaEntity) {
         return this.requestedFirmBankingRepository.save(requestedFirmBankingJpaEntity);
     }
