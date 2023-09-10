@@ -26,4 +26,14 @@ public class RequestFirmBankingController {
         RequestFirmBank requestFirmBank = requestFirmBankingUseCase.requestFirmBanking(command);
         return ResponseEntity.ok(requestFirmBank);
     }
+
+    @PostMapping("/banking/firmBanking/request-eda")
+    public void requireFirmBankingByEvent(@RequestBody RequestFirmBanking request) {
+        RequestFirmBankingCommand command = new RequestFirmBankingCommand(
+                request.getFromBankAccountNumber(), request.getFromBankName(),
+                request.getToBankAccountNumber(), request.getToBankName(),
+                request.getMoneyAmount());
+
+        requestFirmBankingUseCase.requestFirmBankingByEvent(command);
+    }
 }

@@ -18,7 +18,6 @@ repositories {
 
 ext {
     axonVersion = "4.6.0"
-    axonVersion = "4.6.0"
 }
 
 dependencies {

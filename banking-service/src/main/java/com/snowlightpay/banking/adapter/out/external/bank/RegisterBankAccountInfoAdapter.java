@@ -21,6 +21,11 @@ public class RegisterBankAccountInfoAdapter implements RegisterBankAccountInfoPo
                                    RequestFirmBank.FromBankAccountNumber fromBankAccountNumber,
                                    RequestFirmBank.ToBankName toBankName,
                                    RequestFirmBank.ToBankAccountNumber toBankAccountNumber) {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new FirmBankingResult(0);
     }
 }

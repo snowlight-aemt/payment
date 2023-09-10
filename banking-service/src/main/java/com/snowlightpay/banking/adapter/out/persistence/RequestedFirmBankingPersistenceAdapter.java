@@ -13,11 +13,12 @@ public class RequestedFirmBankingPersistenceAdapter implements RequestFirmBankPo
     private final RequestedFirmBankingRepository requestedFirmBankingRepository;
     @Override
     public RequestedFirmBankingJpaEntity createFirmBanking(RequestFirmBank.FromBankName fromBankName,
-                                                           RequestFirmBank.FromBankAccountNumber fromBankAccountNumber,
-                                                           RequestFirmBank.ToBankName toBankName,
-                                                           RequestFirmBank.ToBankAccountNumber toBankAccountNumber,
-                                                           RequestFirmBank.MoneyAmount moneyAmount,
-                                                           RequestFirmBank.FirmBankingStatus firmBankingStatus) {
+                                                            RequestFirmBank.FromBankAccountNumber fromBankAccountNumber,
+                                                            RequestFirmBank.ToBankName toBankName,
+                                                            RequestFirmBank.ToBankAccountNumber toBankAccountNumber,
+                                                            RequestFirmBank.MoneyAmount moneyAmount,
+                                                            RequestFirmBank.FirmBankingStatus firmBankingStatus,
+                                                            RequestFirmBank.AggregateIdentifier aggregateIdentifier) {
         return this.requestedFirmBankingRepository.save(new RequestedFirmBankingJpaEntity(
                 fromBankAccountNumber.getFromBankAccountNumber(),
                 fromBankName.getFromBankName(),
@@ -25,7 +26,8 @@ public class RequestedFirmBankingPersistenceAdapter implements RequestFirmBankPo
                 toBankName.getToBankName(),
                 moneyAmount.getMoneyAmount(),
                 firmBankingStatus.getFirmBankingStatus(),
-                UUID.randomUUID()
+                UUID.randomUUID(),
+                aggregateIdentifier.getAggregateIdentifier()
         ));
     }
 

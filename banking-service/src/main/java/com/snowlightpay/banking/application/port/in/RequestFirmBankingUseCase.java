@@ -4,4 +4,6 @@ import com.snowlightpay.banking.domain.RequestFirmBank;
 
 public interface RequestFirmBankingUseCase {
     RequestFirmBank requestFirmBanking(RequestFirmBankingCommand command);
+
+    void requestFirmBankingByEvent(RequestFirmBankingCommand command);
 }

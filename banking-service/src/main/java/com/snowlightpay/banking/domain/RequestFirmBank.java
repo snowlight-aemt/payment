@@ -76,4 +76,9 @@ public class RequestFirmBank {
         public FirmBankingStatus(int firmBankingStatus) { this.firmBankingStatus = firmBankingStatus; }
         int firmBankingStatus;
     }
+    @Value
+    public static class AggregateIdentifier {
+        public AggregateIdentifier(String aggregateIdentifier) { this.aggregateIdentifier = aggregateIdentifier; }
+        String aggregateIdentifier;
+    }
 }

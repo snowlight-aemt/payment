@@ -27,6 +27,7 @@ public class RequestedFirmBankingJpaEntity {
     private int moneyAmount;
     private int firmBankingStatus; // 0 요청 1 완료 2 실패
     private String uuid;
+    private String aggregateIdentifier;
 
     public RequestedFirmBankingJpaEntity(String fromBankAccountNumber,
                                          String fromBankName,
@@ -34,26 +35,30 @@ public class RequestedFirmBankingJpaEntity {
                                          String toBankName,
                                          int moneyAmount,
                                          int firmBankingStatus,
-                                         UUID uuid) {
+                                         UUID uuid,
+                                         String aggregateIdentifier) {
         this.fromBankAccountNumber = fromBankAccountNumber;
         this.fromBankName = fromBankName;
         this.toBankAccountNumber = toBankAccountNumber;
         this.toBankName = toBankName;
         this.moneyAmount = moneyAmount;
         this.firmBankingStatus = firmBankingStatus;
+        this.aggregateIdentifier = aggregateIdentifier;
         this.uuid = uuid.toString();
     }
 
     @Override
     public String toString() {
         return "RequestedFirmBankingJpaEntity{" +
-                "firmBankingId='" + firmBankingId + '\'' +
+                "firmBankingId=" + firmBankingId +
                 ", fromBankAccountNumber='" + fromBankAccountNumber + '\'' +
                 ", fromBankName='" + fromBankName + '\'' +
                 ", toBankAccountNumber='" + toBankAccountNumber + '\'' +
                 ", toBankName='" + toBankName + '\'' +
                 ", moneyAmount=" + moneyAmount +
                 ", firmBankingStatus=" + firmBankingStatus +
+                ", uuid='" + uuid + '\'' +
+                ", aggregateIdentifier='" + aggregateIdentifier + '\'' +
                 '}';
     }
 }
