@@ -4,4 +4,6 @@ import com.snowlightpay.banking.domain.RegisterBankAccount;
 
 public interface RegisterBankAccountUseCase {
     RegisterBankAccount createBankAccount(RegisterBankAccountCommand common);
+
+    void createBankAccountByEvent(RegisterBankAccountCommand command);
 }
