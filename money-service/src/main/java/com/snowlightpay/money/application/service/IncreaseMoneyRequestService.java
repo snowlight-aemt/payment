@@ -6,6 +6,7 @@ import com.snowlightpay.common.SubTask;
 import com.snowlightpay.common.UseCase;
 import com.snowlightpay.money.adapter.axon.command.IncreaseMemberMoneyCommand;
 import com.snowlightpay.money.adapter.axon.command.MemberMoneyCreatedCommand;
+import com.snowlightpay.money.adapter.axon.command.RechargingMoneyRequestCreateCommand;
 import com.snowlightpay.money.adapter.out.persistence.MemberMoneyJpaEntity;
 import com.snowlightpay.money.adapter.out.persistence.MoneyChangingRequestJpaEntity;
 import com.snowlightpay.money.adapter.out.persistence.MoneyChangingRequestMapper;
@@ -181,24 +182,37 @@ public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase,
     public void increaseMoneyChangingRequestByEvent(IncreaseMoneyRequestCommand command) {
         MemberMoneyJpaEntity memberMoney = this.getMemberMoneyPort.getMemberMoney(
                                                     new MemberMoney.MembershipId(command.getTargetMembershipId()));
-        log.warn(memberMoney.getAggregateIdentifier());
-        IncreaseMemberMoneyCommand axonCommand = new IncreaseMemberMoneyCommand(memberMoney.getAggregateIdentifier(),
-                                                            command.getTargetMembershipId(),
-                                                            command.getMoneyChangingAmount());
+        String aggregateIdentifier = memberMoney.getAggregateIdentifier();
+//        IncreaseMemberMoneyCommand axonCommand = new IncreaseMemberMoneyCommand(aggregateIdentifier,
+//                                                            command.getTargetMembershipId(),
+//                                                            command.getMoneyChangingAmount());
+
 
         // Send - Event Queue
-        CompletableFuture<Object> send = this.commandGateway.send(axonCommand);
-        send.whenComplete((result, throwable) -> {
+        this.commandGateway.send(new RechargingMoneyRequestCreateCommand(aggregateIdentifier,
+                                                                        UUID.randomUUID().toString(),
+                                                                        command.getTargetMembershipId(),
+                                                                        command.getMoneyChangingAmount())
+        ).whenComplete((result, throwable) -> {
             if (throwable != null) {
-                log.info("Increase throwable = " + throwable);
                 throwable.printStackTrace();
-                throw new RuntimeException(throwable);
             } else {
-                log.info("Increase Money result = " + result);
-                this.increaseMoneyRequestPort.increaseMemberMoney(
-                        new MemberMoney.MembershipId(command.getTargetMembershipId()),
-                        new MemberMoney.Balance(command.getMoneyChangingAmount()));
+                //
             }
         });
+
+//        CompletableFuture<Object> send = this.commandGateway.send(axonCommand);
+//        send.whenComplete((result, throwable) -> {
+//            if (throwable != null) {
+//                log.info("Increase throwable = " + throwable);
+//                throwable.printStackTrace();
+//                throw new RuntimeException(throwable);
+//            } else {
+//                log.info("Increase Money result = " + result);
+//                this.increaseMoneyRequestPort.increaseMemberMoney(
+//                        new MemberMoney.MembershipId(command.getTargetMembershipId()),
+//                        new MemberMoney.Balance(command.getMoneyChangingAmount()));
+//            }
+//        });
     }
 }

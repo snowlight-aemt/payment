@@ -28,16 +28,16 @@ public class MoneyRechargeSaga {
 
         String rechargingRequestId = event.getRechargingRequestId();
 
-        SagaLifecycle.associateWith("rechargingRequestId", rechargingRequestId);
-
+//        SagaLifecycle.associateWith("rechargingRequestId", rechargingRequestId);
+//
         // 충전 요청 - 시작
 
         // 뱅킹의 계좌 등록 여부 확인 (RegisteredBankAccount)
         // CheckRegisteredBankAccountCommand
         // -> axon server -> Banking Service (공통 모듈)
-        this.commandGateway.send(new CheckRegisteredBankAccountCommand("",
-                                                                        rechargingRequestId,
-                                                                        event.getMembershipId()));
+//        this.commandGateway.send(new CheckRegisteredBankAccountCommand("",
+//                                                                        rechargingRequestId,
+//                                                                        event.getMembershipId()));
 
 
     }

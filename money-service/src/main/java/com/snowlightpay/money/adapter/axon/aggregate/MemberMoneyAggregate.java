@@ -2,8 +2,12 @@ package com.snowlightpay.money.adapter.axon.aggregate;
 
 import com.snowlightpay.money.adapter.axon.command.IncreaseMemberMoneyCommand;
 import com.snowlightpay.money.adapter.axon.command.MemberMoneyCreatedCommand;
+import com.snowlightpay.money.adapter.axon.command.RechargingMoneyRequestCreateCommand;
 import com.snowlightpay.money.adapter.axon.event.IncreaseMemberMoneyEvent;
 import com.snowlightpay.money.adapter.axon.event.MemberMoneyCreatedEvent;
+import com.snowlightpay.money.adapter.axon.event.RechargingRequestCreatedEvent;
+import com.snowlightpay.money.application.port.out.GetRegisteredBankAccountPort;
+import com.snowlightpay.money.application.port.out.RegisteredBankAccountAggregateIdentifier;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +42,24 @@ public class MemberMoneyAggregate {
 
         apply(new IncreaseMemberMoneyEvent(id, command.getMembershipId(), command.getAmount()));
         return id;
+    }
+
+    // Start Saga
+    @CommandHandler
+    public void handle(@NotNull RechargingMoneyRequestCreateCommand command,
+                         GetRegisteredBankAccountPort getRegisteredBankAccountPort) {
+        System.out.println("");
+        this.id = command.getAggregateIdentifier();
+
+        RegisteredBankAccountAggregateIdentifier registeredBankAccount =
+                                getRegisteredBankAccountPort.getRegisteredBankAccount(command.getMembershipId());
+
+        apply(new RechargingRequestCreatedEvent(command.getRechargingRequestId(),
+                                                    command.getMembershipId(),
+                                                    command.getAmount(),
+                                                    registeredBankAccount.getAggregateIdentifier(),
+                                                    registeredBankAccount.getBankName(),
+                                                    registeredBankAccount.getBankAccountNumber()));
     }
 
     @EventSourcingHandler

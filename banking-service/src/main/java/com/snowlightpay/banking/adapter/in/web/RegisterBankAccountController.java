@@ -6,6 +6,7 @@ import com.snowlightpay.banking.domain.RegisterBankAccount;
 import com.snowlightpay.common.WebAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,8 @@ public class RegisterBankAccountController {
         RegisterBankAccountCommand command = new RegisterBankAccountCommand(request.getMembershipId(),
                                                                             request.getBankName(),
                                                                             request.getBankAccountNumber(),
-                                                                            request.isLinkedStatusIsValid());
+                                                                            request.isLinkedStatusIsValid(),
+                                                                            "");
 
         RegisterBankAccount registerBankAccount = registerBankAccountUseCase.createBankAccount(command);
         return ResponseEntity.ok(registerBankAccount);
@@ -32,7 +34,8 @@ public class RegisterBankAccountController {
         RegisterBankAccountCommand command = new RegisterBankAccountCommand(request.getMembershipId(),
                 request.getBankName(),
                 request.getBankAccountNumber(),
-                request.isLinkedStatusIsValid());
+                request.isLinkedStatusIsValid(),
+                "");
 
         registerBankAccountUseCase.createBankAccountByEvent(command);
     }

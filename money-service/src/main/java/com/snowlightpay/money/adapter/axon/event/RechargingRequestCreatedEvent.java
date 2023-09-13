@@ -13,4 +13,9 @@ public class RechargingRequestCreatedEvent {
     private String rechargingRequestId;
     private String membershipId;
     private int amount;
+
+    private String registeredBankAccountAggregateIdentifier;
+    private String bankName;
+    private String backAccountNumber;
+
 }

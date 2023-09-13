@@ -4,12 +4,11 @@ import com.snowlightpay.banking.adapter.axon.command.CreateRegisteredBankAccount
 import com.snowlightpay.banking.adapter.out.external.bank.BankAccount;
 import com.snowlightpay.banking.adapter.out.persistence.RegisteredBackAccountMapper;
 import com.snowlightpay.banking.adapter.out.persistence.RegisteredBankAccountJpaEntity;
+import com.snowlightpay.banking.application.port.in.GetRegisteredBankAccountCommand;
+import com.snowlightpay.banking.application.port.in.GetRegisteredBankAccountUseCase;
 import com.snowlightpay.banking.application.port.in.RegisterBankAccountCommand;
 import com.snowlightpay.banking.application.port.in.RegisterBankAccountUseCase;
-import com.snowlightpay.banking.application.port.out.GetMembershipPort;
-import com.snowlightpay.banking.application.port.out.MembershipStatus;
-import com.snowlightpay.banking.application.port.out.RegisterBankAccountInfoPort;
-import com.snowlightpay.banking.application.port.out.RegisterBankAccountPort;
+import com.snowlightpay.banking.application.port.out.*;
 import com.snowlightpay.banking.domain.RegisterBankAccount;
 import com.snowlightpay.common.UseCase;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +16,14 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 
 @UseCase
 @RequiredArgsConstructor
-public class RegisterBackingAccountService implements RegisterBankAccountUseCase {
+public class RegisterBackingAccountService implements RegisterBankAccountUseCase, GetRegisteredBankAccountUseCase {
     private final RegisterBankAccountPort registerBankAccountPort;
     private final RegisteredBackAccountMapper registeredBackAccountMapper;
 
     private final RegisterBankAccountInfoPort registerBankAccountInfoPort;
 
     private final GetMembershipPort getMembershipPort;
+    private final GetRegisteredBankAccountPort getRegisteredBankAccountPort;
 
     private final CommandGateway commandGateway;
 
@@ -46,7 +46,8 @@ public class RegisterBackingAccountService implements RegisterBankAccountUseCase
                     new RegisterBankAccount.MembershipId(command.getMembershipId()),
                     new RegisterBankAccount.BankName(command.getBankName()),
                     new RegisterBankAccount.BankAccountNumber(command.getBankAccountNumber()),
-                    new RegisterBankAccount.LinkedStatusIsValid(command.isLinkedStatusIsValid())
+                    new RegisterBankAccount.LinkedStatusIsValid(command.isLinkedStatusIsValid()),
+                    new RegisterBankAccount.AggregateIdentifier("")
             );
 
             return registeredBackAccountMapper.mapToDomainEntity(membership);
@@ -70,9 +71,23 @@ public class RegisterBackingAccountService implements RegisterBankAccountUseCase
                         new RegisterBankAccount.MembershipId(command.getMembershipId()),
                         new RegisterBankAccount.BankName(command.getBankName()),
                         new RegisterBankAccount.BankAccountNumber(command.getBankAccountNumber()),
-                        new RegisterBankAccount.LinkedStatusIsValid(command.isLinkedStatusIsValid())
+                        new RegisterBankAccount.LinkedStatusIsValid(command.isLinkedStatusIsValid()),
+                        new RegisterBankAccount.AggregateIdentifier(command.getAggregateIdentifier())
                 );
             }
         });
+    }
+
+    @Override
+    public RegisterBankAccount getRegisteredBankAccount(GetRegisteredBankAccountCommand command) {
+        RegisteredBankAccountJpaEntity entity = getRegisteredBankAccountPort.getRegisteredBankAccount(command).stream()
+                .findFirst().orElseThrow(IllegalAccessError::new);
+
+        return new RegisterBankAccount(entity.getBackAccountId() + "",
+                                        entity.getMembershipId() + "",
+                                        entity.getBankName(),
+                                        entity.getBankAccountNumber(),
+                                        entity.isLinkedStatusIsValid(),
+                                        entity.getAggregateIdentifier());
     }
 }

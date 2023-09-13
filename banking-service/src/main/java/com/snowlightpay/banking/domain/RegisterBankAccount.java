@@ -1,30 +1,33 @@
 package com.snowlightpay.banking.domain;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class RegisterBankAccount {
-    private String bankAccountId;
+    private String registeredBankAccountId;
     private String membershipId;
     private String bankName;
     private String bankAccountNumber;
 
     private boolean linkedStatusIsValid;
+    private String aggregateIdentifier;
+
 
     public static RegisterBankAccount generateMember (BankAccountId bankAccountId, MembershipId membershipId,
                                                       BankName bankName,
                                                       BankAccountNumber bankAccountNumber,
-                                                      LinkedStatusIsValid linkedStatusIsValid) {
+                                                      LinkedStatusIsValid linkedStatusIsValid,
+                                                      AggregateIdentifier aggregateIdentifier) {
         return new RegisterBankAccount(
                 bankAccountId.getBankAccountId(),
                 membershipId.getMembershipId(),
                 bankName.getBackName(),
                 bankAccountNumber.getBankAccountNumber(),
-                linkedStatusIsValid.isLinkedStatusIsValid());
+                linkedStatusIsValid.isLinkedStatusIsValid(),
+                aggregateIdentifier.getAggregateIdentifier());
     }
 
 
@@ -52,5 +55,10 @@ public class RegisterBankAccount {
     public static class LinkedStatusIsValid {
         public LinkedStatusIsValid(boolean linkedStatusIsValid) { this.linkedStatusIsValid = linkedStatusIsValid; }
         boolean linkedStatusIsValid;
+    }
+    @Value
+    public static class AggregateIdentifier {
+        public AggregateIdentifier(String aggregateIdentifier) { this.aggregateIdentifier = aggregateIdentifier; }
+        String aggregateIdentifier;
     }
 }
