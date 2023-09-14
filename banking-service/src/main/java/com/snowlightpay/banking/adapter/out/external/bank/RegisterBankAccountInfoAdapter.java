@@ -18,9 +18,10 @@ public class RegisterBankAccountInfoAdapter implements RegisterBankAccountInfoPo
 
     @Override
     public FirmBankingResult requestFirmBanking(RequestFirmBank.FromBankName fromBankName,
-                                   RequestFirmBank.FromBankAccountNumber fromBankAccountNumber,
-                                   RequestFirmBank.ToBankName toBankName,
-                                   RequestFirmBank.ToBankAccountNumber toBankAccountNumber) {
+                                    RequestFirmBank.FromBankAccountNumber fromBankAccountNumber,
+                                    RequestFirmBank.ToBankName toBankName,
+                                    RequestFirmBank.ToBankAccountNumber toBankAccountNumber,
+                                    RequestFirmBank.MoneyAmount moneyAmount) {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {

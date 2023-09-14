@@ -7,5 +7,6 @@ public interface RequestExternalFirmBankPort {
     FirmBankingResult requestFirmBanking(RequestFirmBank.FromBankName fromBankName,
                                          RequestFirmBank.FromBankAccountNumber fromBankAccountNumber,
                                          RequestFirmBank.ToBankName toBankName,
-                                         RequestFirmBank.ToBankAccountNumber toBankAccountNumber);
+                                         RequestFirmBank.ToBankAccountNumber toBankAccountNumber,
+                                         RequestFirmBank.MoneyAmount moneyAmount);
 }

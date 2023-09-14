@@ -72,7 +72,7 @@ public class RegisterBackingAccountService implements RegisterBankAccountUseCase
                         new RegisterBankAccount.BankName(command.getBankName()),
                         new RegisterBankAccount.BankAccountNumber(command.getBankAccountNumber()),
                         new RegisterBankAccount.LinkedStatusIsValid(command.isLinkedStatusIsValid()),
-                        new RegisterBankAccount.AggregateIdentifier(command.getAggregateIdentifier())
+                        new RegisterBankAccount.AggregateIdentifier(result.toString())
                 );
             }
         });

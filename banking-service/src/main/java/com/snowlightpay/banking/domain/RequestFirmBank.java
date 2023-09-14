@@ -18,6 +18,7 @@ public class RequestFirmBank {
     private int moneyAmount;
     private int firmBankingStatus; // 0 요청 1 완료 2 실패
     private UUID uuid;
+    private String aggregateIdentifier;
 
 
     public static RequestFirmBank generateMember (FirmBankingId firmBankingId,
@@ -27,7 +28,8 @@ public class RequestFirmBank {
                                                   ToBankName toBankName,
                                                   MoneyAmount moneyAmount,
                                                   FirmBankingStatus firmBankingStatus,
-                                                  UUID uuid) {
+                                                  UUID uuid,
+                                                  AggregateIdentifier aggregateIdentifier) {
         return new RequestFirmBank(
                 firmBankingId.getFirmBankingId(),
                 fromBankAccountNumber.getFromBankAccountNumber(),
@@ -36,7 +38,8 @@ public class RequestFirmBank {
                 toBankName.getToBankName(),
                 moneyAmount.getMoneyAmount(),
                 firmBankingStatus.getFirmBankingStatus(),
-                uuid
+                uuid,
+                aggregateIdentifier.getAggregateIdentifier()
         );
     }
 
