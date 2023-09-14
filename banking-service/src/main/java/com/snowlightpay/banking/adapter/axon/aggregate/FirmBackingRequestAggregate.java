@@ -11,6 +11,8 @@ import com.snowlightpay.banking.application.port.out.RequestFirmBankPort;
 import com.snowlightpay.banking.domain.RequestFirmBank;
 import com.snowlightpay.common.event.RequestFirmbankingCommand;
 import com.snowlightpay.common.event.RequestFirmbankingEvent;
+import com.snowlightpay.common.event.RollbackFirmbankingRequestCommand;
+import com.snowlightpay.common.event.RollbackFirmbankingRequestEvent;
 import lombok.Data;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -83,6 +85,39 @@ public class FirmBackingRequestAggregate {
                 resultCode,
                 id
         ));
+    }
+
+    @CommandHandler
+    public FirmBackingRequestAggregate(RollbackFirmbankingRequestCommand command,
+                                       RequestFirmBankPort requestFirmBankPort,
+                                       RequestExternalFirmBankPort requestExternalFirmBankPort) {
+        System.out.println("RollbankFirmbankRequestCommand Handler");
+        id = UUID.randomUUID().toString();
+
+        requestFirmBankPort.createFirmBanking(
+                new RequestFirmBank.FromBankName("snowlight"),
+                new RequestFirmBank.FromBankAccountNumber("111-1111-1111"),
+                new RequestFirmBank.ToBankName(command.getToBankName()),
+                new RequestFirmBank.ToBankAccountNumber(command.getToBankAccountNumber()),
+                new RequestFirmBank.MoneyAmount(command.getMoneyAmount()),
+                new RequestFirmBank.FirmBankingStatus(0),
+                new RequestFirmBank.AggregateIdentifier(id)
+        );
+
+        FirmBankingResult firmBankingResult = requestExternalFirmBankPort.requestFirmBanking(
+                new RequestFirmBank.FromBankName("snowlight"),
+                new RequestFirmBank.FromBankAccountNumber("111-1111-1111"),
+                new RequestFirmBank.ToBankName(command.getToBankName()),
+                new RequestFirmBank.ToBankAccountNumber(command.getToBankAccountNumber()),
+                new RequestFirmBank.MoneyAmount(command.getMoneyAmount())
+        );
+
+        int resultCode = firmBankingResult.getResultCode();
+        apply(new RollbackFirmbankingRequestEvent(
+                command.getRollbackFirmbankingId(),
+                command.getMembershipId(),
+                id));
+
     }
 
     @CommandHandler
