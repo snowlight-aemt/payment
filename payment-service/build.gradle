@@ -22,20 +22,19 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    runtimeOnly 'com.mysql:mysql-conne/ctor-j:8.1.0'
-//    runtimeOnly 'com.h2database:h2:2.2.220'
-
+    runtimeOnly 'com.mysql:mysql-connector-j:8.1.0'
+////    runtimeOnly 'com.h2database:h2:2.2.220'
+//
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
-//    implementation 'org.springframework.boot:spring-boot-starter-aop'
-//    implementation 'org.springframework.kafka:spring-kafka'
-//
-//    implementation project(path: ':common')
-//
-//    compileOnly 'org.projectlombok:lombok'
-//    annotationProcessor 'org.projectlombok:lombok'
-//
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    implementation project(path: ':common')
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//    testRuntimeOnly 'com.h2database:h2:2.2.220'
+    testRuntimeOnly 'com.h2database:h2:2.2.220'
 }
 
 test {
