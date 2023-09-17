@@ -47,7 +47,8 @@ public class RequestFirmBankingService implements RequestFirmBankingUseCase, Upd
                 new RequestFirmBank.FromBankName(command.getFromBankName()),
                 new RequestFirmBank.FromBankAccountNumber(command.getFromBankAccountNumber()),
                 new RequestFirmBank.ToBankName(command.getToBankName()),
-                new RequestFirmBank.ToBankAccountNumber(command.getToBankAccountNumber())
+                new RequestFirmBank.ToBankAccountNumber(command.getToBankAccountNumber()),
+                new RequestFirmBank.MoneyAmount(command.getMoneyAmount())
         );
 
         UUID uuid = UUID.randomUUID();
@@ -96,7 +97,8 @@ public class RequestFirmBankingService implements RequestFirmBankingUseCase, Upd
                         new RequestFirmBank.FromBankName(command.getFromBankName()),
                         new RequestFirmBank.FromBankAccountNumber(command.getFromBankAccountNumber()),
                         new RequestFirmBank.ToBankName(command.getToBankName()),
-                        new RequestFirmBank.ToBankAccountNumber(command.getToBankAccountNumber())
+                        new RequestFirmBank.ToBankAccountNumber(command.getToBankAccountNumber()),
+                        new RequestFirmBank.MoneyAmount(command.getMoneyAmount())
                 );
 
                 UUID uuid = UUID.randomUUID();

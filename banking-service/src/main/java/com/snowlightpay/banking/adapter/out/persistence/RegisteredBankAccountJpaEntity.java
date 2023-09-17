@@ -23,22 +23,25 @@ public class RegisteredBankAccountJpaEntity {
     private String bankAccountNumber;
 
     private boolean linkedStatusIsValid;
+    private String aggregateIdentifier;
 
-    public RegisteredBankAccountJpaEntity(Long membershipId, String bankName, String bankAccountNumber, boolean linkedStatusIsValid) {
+    public RegisteredBankAccountJpaEntity(Long membershipId, String bankName, String bankAccountNumber, boolean linkedStatusIsValid, String aggregateIdentifier) {
         this.bankName = bankName;
         this.bankAccountNumber = bankAccountNumber;
         this.membershipId = membershipId;
         this.linkedStatusIsValid = linkedStatusIsValid;
+        this.aggregateIdentifier = aggregateIdentifier;
     }
 
     @Override
     public String toString() {
-        return "BackAccountJpaEntity{" +
+        return "RegisteredBankAccountJpaEntity{" +
                 "backAccountId=" + backAccountId +
-                ", backName='" + bankName + '\'' +
-                ", backAccountNumber='" + bankAccountNumber + '\'' +
                 ", membershipId=" + membershipId +
+                ", bankName='" + bankName + '\'' +
+                ", bankAccountNumber='" + bankAccountNumber + '\'' +
                 ", linkedStatusIsValid=" + linkedStatusIsValid +
+                ", aggregateIdentifier='" + aggregateIdentifier + '\'' +
                 '}';
     }
 }
