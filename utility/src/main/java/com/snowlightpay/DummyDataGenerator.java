@@ -32,9 +32,10 @@ public class DummyDataGenerator {
 
         PreparedStatement pstmt = conn.prepareStatement(insertQuery);
 
-        int numberOfDummyData = 1000;
+        int numberOfDummyData = 10000;
 
         for (int i = 0; i <= numberOfDummyData; i++) {
+            System.out.println(i);
             pstmt.setLong(1, i);
             pstmt.setString(2, ADDRESSES[random.nextInt(ADDRESSES.length)]);
             pstmt.setString(3, "email_" + i + "@example.com");
