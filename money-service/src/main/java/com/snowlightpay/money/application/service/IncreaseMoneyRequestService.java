@@ -188,6 +188,7 @@ public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase,
 //                                                            command.getMoneyChangingAmount());
 
 
+        System.out.println("SAGA START " + aggregateIdentifier + "  " + command.getTargetMembershipId());
         // Send - Event Queue
         this.commandGateway.send(new RechargingMoneyRequestCreateCommand(aggregateIdentifier,
                                                                         UUID.randomUUID().toString(),
@@ -196,8 +197,9 @@ public class IncreaseMoneyRequestService implements IncreaseMoneyRequestUseCase,
         ).whenComplete((result, throwable) -> {
             if (throwable != null) {
                 throwable.printStackTrace();
+                throw new RuntimeException(throwable);
             } else {
-                //
+                System.out.println("result = " + result); // aggregateIdentifier
             }
         });
 

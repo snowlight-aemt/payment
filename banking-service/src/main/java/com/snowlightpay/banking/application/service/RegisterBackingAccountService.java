@@ -57,7 +57,7 @@ public class RegisterBackingAccountService implements RegisterBankAccountUseCase
     }
 
     @Override
-    public void createBankAccountByEvent(RegisterBankAccountCommand command) {
+    public void  createBankAccountByEvent(RegisterBankAccountCommand command) {
         var axonCommand = new CreateRegisteredBankAccountCommand(command.getMembershipId(),
                 command.getBankName(),
                 command.getBankAccountNumber());

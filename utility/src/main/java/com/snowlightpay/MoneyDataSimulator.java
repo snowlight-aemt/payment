@@ -26,11 +26,11 @@ public class MoneyDataSimulator {
 
         while (true) {
             int amount = random.nextInt(20001) + 1;
-            int targetMembershipId = random.nextInt(10000) + 1;
+            int targetMembershipId = random.nextInt(100) + 1;
 
             registerAccountSimulator(REGISTER_ACCOUNT_API_ENDPOINT, targetMembershipId);
             createMemberMoneySimulator(CREATE_MONEY_API_ENDPOINT, targetMembershipId);
-            Thread.sleep(1500);
+            Thread.sleep(3000);
 
             readyMemberList.add(targetMembershipId);
 
@@ -42,7 +42,7 @@ public class MoneyDataSimulator {
 
 
             try {
-                Thread.sleep(500);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
