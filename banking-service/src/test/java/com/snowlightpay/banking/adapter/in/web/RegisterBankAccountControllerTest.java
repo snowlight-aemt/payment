@@ -30,7 +30,7 @@ class RegisterBankAccountControllerTest {
                 "123-101-123456",
                 true);
 
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/backing/account/register")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/banking/account/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(MockMvcResultMatchers.status().isOk())

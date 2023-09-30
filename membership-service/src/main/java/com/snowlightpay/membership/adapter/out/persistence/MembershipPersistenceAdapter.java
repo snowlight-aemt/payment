@@ -1,14 +1,19 @@
 package com.snowlightpay.membership.adapter.out.persistence;
 
 import com.snowlightpay.common.PersistenceAdapter;
+import com.snowlightpay.membership.application.port.out.FindMembershipByAddressPort;
 import com.snowlightpay.membership.application.port.out.RegisterMembershipPort;
 import com.snowlightpay.membership.domain.Membership;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class MembershipPersistenceAdapter implements RegisterMembershipPort {
+public class MembershipPersistenceAdapter implements RegisterMembershipPort, FindMembershipByAddressPort {
     private final MembershipRepository membershipRepository;
+    private final MembershipMapper membershipMapper;
 
     @Override
     public MembershipJpaEntity createMembership(Membership.MembershipName membershipName,
@@ -47,5 +52,12 @@ public class MembershipPersistenceAdapter implements RegisterMembershipPort {
         entity.setCorp(membershipCorp.isMembershipCorp());
 
         return membershipRepository.save(entity);
+    }
+
+    @Override
+    public List<Membership> findMemberByAddress(Membership.MembershipAddress membershipAddress) {
+        return membershipRepository.findByAddress(membershipAddress.getMembershipAddress())
+                .stream().map(membershipMapper::mapToDomainEntity).collect(Collectors.toList());
+
     }
 }

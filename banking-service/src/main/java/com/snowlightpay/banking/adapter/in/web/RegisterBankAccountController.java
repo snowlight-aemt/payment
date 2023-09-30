@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RegisterBankAccountController {
     private final RegisterBankAccountUseCase registerBankAccountUseCase;
-    @PostMapping("/backing/account/register")
+    @PostMapping("/banking/account/register")
     public ResponseEntity<RegisterBankAccount> registerBankAccount(@RequestBody RegisterBankAccountRequest request) {
         RegisterBankAccountCommand command = new RegisterBankAccountCommand(request.getMembershipId(),
                                                                             request.getBankName(),
@@ -29,7 +29,7 @@ public class RegisterBankAccountController {
     }
 
 
-    @PostMapping("/backing/account/register-eda")
+    @PostMapping("/banking/account/register-eda")
     public void registerBankAccountByEvent(@RequestBody RegisterBankAccountRequest request) {
         RegisterBankAccountCommand command = new RegisterBankAccountCommand(request.getMembershipId(),
                 request.getBankName(),

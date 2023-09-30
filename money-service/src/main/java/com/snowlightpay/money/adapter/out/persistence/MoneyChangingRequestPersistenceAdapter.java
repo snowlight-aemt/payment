@@ -10,12 +10,15 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
 public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyRequestPort, CreateMemberMoneyPort, GetMemberMoneyPort {
     private final MoneyChangingRequestRepository moneyChangingRequestRepository;
     private final MemberMoneyRepository memberMoneyRepository;
+
+    private final MemberMoneyMapper memberMoneyMapper;
 
     @Override
     public MoneyChangingRequestJpaEntity createMoneyChanging(MoneyChangingRequest.TargetMembershipId targetMembershipId,
@@ -65,5 +68,15 @@ public class MoneyChangingRequestPersistenceAdapter implements IncreaseMoneyRequ
     public MemberMoneyJpaEntity getMemberMoney(MemberMoney.MembershipId memberMoneyId) {
         return this.memberMoneyRepository.findByMembershipId(Long.parseLong(memberMoneyId.getMembershipId()))
                                             .stream().findFirst().orElseThrow(IllegalAccessError::new);
+    }
+
+    @Override
+    public List<MemberMoney> findMemberMoneyListByMembershipIds(List<MemberMoney.MembershipId> membershipIds) {
+        List<Long> convertedMembershipIds = membershipIds.stream()
+                                                .map(membership -> Long.parseLong(membership.getMembershipId()))
+                                                .collect(Collectors.toList());
+
+        List<MemberMoneyJpaEntity> sumBalanceByMembershipIds = this.memberMoneyRepository.findBalanceByMembershipIds(convertedMembershipIds);
+        return sumBalanceByMembershipIds.stream().map(memberMoneyMapper::mapToDomainEntity).collect(Collectors.toList());
     }
 }
