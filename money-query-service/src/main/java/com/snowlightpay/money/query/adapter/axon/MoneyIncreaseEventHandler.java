@@ -26,6 +26,6 @@ public class MoneyIncreaseEventHandler {
         int moneyIncrease = event.getMoneyAmount();
         log.info("DynamoDB Insert - " + address + " - " + moneyIncrease);
 
-//        insertMoneyIncreaseEventByAddress.insertMoneyIncreaseEventByAddress(address, moneyIncrease);
+        insertMoneyIncreaseEventByAddress.insertMoneyIncreaseEventByAddress(address, moneyIncrease);
     }
 }

@@ -39,8 +39,8 @@ public class DynamoDBAdapter implements GetMoneySumByRegionPort, InsertMoneyIncr
     }
 
     @Override
-    public MoneySum getMoneySumByRegionPort(String regionName, Date startDate) {
-        return null;
+    public int getMoneySumByRegionPort(String address) {
+        return getItem(address, "-1").getBalance();
     }
 
     @Override
@@ -189,7 +189,7 @@ public class DynamoDBAdapter implements GetMoneySumByRegionPort, InsertMoneyIncr
         return MoneySumByRegion.generateMoneySumByRegion(
                 new MoneySumByRegion.MoneySumByRegionId(UUID.randomUUID().toString()),
                 new MoneySumByRegion.RegionName(query.getAddress()),
-                new MoneySumByRegion.MoneySum(1000)
+                new MoneySumByRegion.MoneySum(getMoneySumByRegionPort(query.getAddress()))
         );
     }
 }
