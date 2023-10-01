@@ -9,7 +9,6 @@ import com.snowlightpay.money.adapter.axon.event.RechargingRequestCreatedEvent;
 import com.snowlightpay.money.application.port.out.GetRegisteredBankAccountPort;
 import com.snowlightpay.money.application.port.out.RegisteredBankAccountAggregateIdentifier;
 import lombok.Data;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -32,13 +31,16 @@ public class MemberMoneyAggregate {
 
     @CommandHandler
     public MemberMoneyAggregate(MemberMoneyCreatedCommand command) {
+        System.out.println("MemberMoneyCreatedCommand Handler");
         // Event Store
         apply(new MemberMoneyCreatedEvent(command.getMemberShipId()));
     }
 
     @CommandHandler
     public String handle(@NotNull IncreaseMemberMoneyCommand command) {
+        System.out.println("IncreaseMemberMoneyCommand Handler");
         id = command.getAggregateIdentifier();
+        System.out.println("IncreaseMemberMoneyCommand ID : " + id);
 
         apply(new IncreaseMemberMoneyEvent(id, command.getMembershipId(), command.getAmount()));
         return id;
@@ -46,20 +48,25 @@ public class MemberMoneyAggregate {
 
     // Start Saga
     @CommandHandler
-    public void handle(@NotNull RechargingMoneyRequestCreateCommand command,
+    public void handle(RechargingMoneyRequestCreateCommand command,
                          GetRegisteredBankAccountPort getRegisteredBankAccountPort) {
-        System.out.println("");
+        log.info("RechargingMoneyRequestCreateCommand START");
         this.id = command.getAggregateIdentifier();
+
+        log.info("RechargingMoneyRequestCreateCommand ID : " + id);
+        log.info("getMembershipId ID : " + command.getMembershipId());
 
         RegisteredBankAccountAggregateIdentifier registeredBankAccount =
                                 getRegisteredBankAccountPort.getRegisteredBankAccount(command.getMembershipId());
 
+        log.info("RechargingMoneyRequestCreateCommand MIDDLE");
         apply(new RechargingRequestCreatedEvent(command.getRechargingRequestId(),
                                                     command.getMembershipId(),
                                                     command.getAmount(),
                                                     registeredBankAccount.getAggregateIdentifier(),
                                                     registeredBankAccount.getBankName(),
                                                     registeredBankAccount.getBankAccountNumber()));
+        log.info("RechargingMoneyRequestCreateCommand END");
     }
 
     @EventSourcingHandler

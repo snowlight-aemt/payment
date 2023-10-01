@@ -32,7 +32,7 @@ public class DummyDataGenerator {
 
         PreparedStatement pstmt = conn.prepareStatement(insertQuery);
 
-        int numberOfDummyData = 10000;
+        int numberOfDummyData = 100;
 
         for (int i = 0; i <= numberOfDummyData; i++) {
             System.out.println(i);

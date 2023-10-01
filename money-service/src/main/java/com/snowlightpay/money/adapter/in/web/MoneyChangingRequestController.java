@@ -32,16 +32,6 @@ public class MoneyChangingRequestController {
         return ResponseEntity.ok(moneyChangingResultDetailMapper.mapToMoneyChangingResultDetail(moneyChangingRequest));
     }
 
-    @PostMapping("/money/decrease-eda")
-    public ResponseEntity<MoneyChangingResultDetail> decreaseMoneyRequest(@RequestBody IncreaseMoneyRequest request) {
-        // 테스트를 위해서 임시 구현
-        IncreaseMoneyRequestCommand command = new IncreaseMoneyRequestCommand(request.getTargetMembershipId(),
-                                                            request.getChangingMoneyAmount() * -1);
-
-        MoneyChangingRequest moneyChangingRequest = increaseMoneyRequestUseCase.increaseMoneyChangingRequest(command);
-        return ResponseEntity.ok(moneyChangingResultDetailMapper.mapToMoneyChangingResultDetail(moneyChangingRequest));
-    }
-
     @PostMapping("/money/increase-async")
     public ResponseEntity<MoneyChangingResultDetail> increaseMoneyRequestAsync(@RequestBody IncreaseMoneyRequest request) {
         IncreaseMoneyRequestCommand command = new IncreaseMoneyRequestCommand(request.getTargetMembershipId(),
@@ -60,9 +50,21 @@ public class MoneyChangingRequestController {
 
     @PostMapping("/money/increase-eda")
     public void increaseMoneyChangingRequestByEvent(@RequestBody IncreaseMoneyRequest request) {
+        System.out.println("money increase eda");
         IncreaseMoneyRequestCommand command = new IncreaseMoneyRequestCommand(request.getTargetMembershipId(),
                                                                                 request.getChangingMoneyAmount());
 
         this.increaseMoneyRequestUseCase.increaseMoneyChangingRequestByEvent(command);
+    }
+
+
+    @PostMapping("/money/decrease-eda")
+    public ResponseEntity<MoneyChangingResultDetail> decreaseMoneyRequest(@RequestBody IncreaseMoneyRequest request) {
+        // 테스트를 위해서 임시 구현
+        IncreaseMoneyRequestCommand command = new IncreaseMoneyRequestCommand(request.getTargetMembershipId(),
+                request.getChangingMoneyAmount() * -1);
+
+        this.increaseMoneyRequestUseCase.increaseMoneyChangingRequestByEvent(command);
+        return null;
     }
 }
