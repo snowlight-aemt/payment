@@ -16,9 +16,50 @@ public class DummyDataGenerator {
 
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, Db_PASSWORD);
 
-            generateDummyData(connection);
+//            generateDummyData(connection);
+            generateDummyPaymentData(connection);
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+
+
+    private static void generateDummyPaymentData (Connection conn) throws SQLException {
+        Random random = new Random();
+
+        try {
+            String insertQuery = "INSERT INTO payment (payment_id, request_membership_id, request_price, " +
+                    "franchise_id, franchise_fee_rate, payment_status, approved_at) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = conn.prepareStatement(insertQuery);
+
+            int numberOfTestData = 50;
+            for (int i = 0; i < numberOfTestData; i++) {
+                // 랜덤 값 생성
+                long paymentId = (random.nextInt(900) + 100L); // 100 ~ 999
+//                String membershipId = "" + (random.nextInt(900) + 100); // 100 ~ 999
+                String membershipId = "" + (random.nextInt(100)  + 1); // 100 ~ 999
+                int price = (random.nextInt(9) + 1) * 1000; // 1000 ~ 9000
+                String franchiseId =  "" + (random.nextInt(10) + 1L);
+                String franchiseFeeRate = String.format("%.2f", random.nextDouble() * 5.0);
+                int paymentStatus = 0;
+                Date approvedAt = new Date(System.currentTimeMillis() - random.nextInt(10000000));
+
+                preparedStatement.setLong(1, paymentId);
+                preparedStatement.setString(2, membershipId);
+                preparedStatement.setInt(3, price);
+                preparedStatement.setString(4, franchiseId);
+                preparedStatement.setString(5, franchiseFeeRate);
+                preparedStatement.setInt(6, paymentStatus);
+                preparedStatement.setDate(7, new java.sql.Date(approvedAt.getTime()));
+                preparedStatement.executeUpdate();
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.close();
         }
     }
 
