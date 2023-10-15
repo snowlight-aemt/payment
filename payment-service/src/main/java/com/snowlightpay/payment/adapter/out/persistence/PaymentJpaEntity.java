@@ -1,9 +1,6 @@
 package com.snowlightpay.payment.adapter.out.persistence;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "payment")
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor
