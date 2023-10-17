@@ -1,5 +1,7 @@
 package com.snowlightpay.common;
 
+import com.google.common.net.MediaType;
+import jdk.jfr.ContentType;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -28,6 +30,7 @@ public class CommonHttpClient {
     public CompletableFuture<HttpResponse<String>> sendPostRequest(String url, String body) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
+                .setHeader("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 

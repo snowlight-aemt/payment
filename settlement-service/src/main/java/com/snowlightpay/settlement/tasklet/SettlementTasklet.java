@@ -24,6 +24,7 @@ public class SettlementTasklet implements  Tasklet{
 
 
         var registeredBankAccount = getRegisteredBankAccountPort.getRegisteredBankAccount("1");
+        getRegisteredBankAccountPort.requestFirmBanking("sss", "sss", 230);
         System.out.println(registeredBankAccount);
 
         return RepeatStatus.FINISHED;
