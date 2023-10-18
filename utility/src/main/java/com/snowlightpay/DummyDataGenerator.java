@@ -17,7 +17,7 @@ public class DummyDataGenerator {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, Db_PASSWORD);
 
 //            generateDummyData(connection);
-            generateDummyPaymentData(connection);
+//            generateDummyPaymentData(connection);
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
@@ -64,29 +64,39 @@ public class DummyDataGenerator {
     }
 
     private static void generateDummyData(Connection conn) throws SQLException {
-//        PreparedStatement pstmtUsingDelete = conn.prepareStatement("DELETE FROM membership");
-//        pstmtUsingDelete.executeUpdate();
-
-        String insertQuery = "INSERT INTO membership (membership_id, address, email, is_corp, is_valid, name) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
         Random random = new Random();
 
-        PreparedStatement pstmt = conn.prepareStatement(insertQuery);
+        try {
+            String insertQuery = "INSERT INTO membership (membership_id, address, email, is_corp, is_valid, name) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = conn.prepareStatement(insertQuery);
 
-        int numberOfDummyData = 100;
+            int numberOfTestData = 10;
+            for (int i = 0; i < numberOfTestData; i++) {
+                // 랜덤 값 생성
+                long paymentId = (random.nextInt(900) + 100L); // 100 ~ 999
+                String membershipId = "" + (random.nextInt(900) + 100); // 100 ~ 999
+                int price = (random.nextInt(9) + 1) * 1000; // 1000 ~ 9000
+                String franchiseId =  "" + (random.nextInt(10) + 1L);
+                String franchiseFeeRate = String.format("%.2f", random.nextDouble() * 5.0);
+                int paymentStatus = 0;
+                Date approvedAt = new Date(System.currentTimeMillis() - random.nextInt(10000000));
 
-        for (int i = 0; i <= numberOfDummyData; i++) {
-            System.out.println(i);
-            pstmt.setLong(1, i);
-            pstmt.setString(2, ADDRESSES[random.nextInt(ADDRESSES.length)]);
-            pstmt.setString(3, "email_" + i + "@example.com");
-            pstmt.setBoolean(4, random.nextBoolean());
-            pstmt.setBoolean(5, random.nextBoolean());
-            pstmt.setString(6, "Uesr " + i);
+                preparedStatement.setLong(1, paymentId);
+                preparedStatement.setString(2, membershipId);
+                preparedStatement.setInt(3, price);
+                preparedStatement.setString(4, franchiseId);
+                preparedStatement.setString(5, franchiseFeeRate);
+                preparedStatement.setInt(6, paymentStatus);
+                preparedStatement.setDate(7, new java.sql.Date(approvedAt.getTime()));
+                preparedStatement.executeUpdate();
 
-            pstmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.close();
         }
 
-        pstmt.close();
     }
 }
