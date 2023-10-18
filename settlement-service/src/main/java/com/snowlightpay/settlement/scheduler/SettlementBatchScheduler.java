@@ -15,7 +15,7 @@ public class SettlementBatchScheduler {
     private final JobLauncher jobLauncher;
     private final Job settlementJob;
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 10000)
     public void runSettlementJob() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("time", System.currentTimeMillis())

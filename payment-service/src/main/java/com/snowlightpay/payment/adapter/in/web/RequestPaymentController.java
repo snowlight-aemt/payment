@@ -37,7 +37,7 @@ public class RequestPaymentController {
     }
 
 //    각 결제 건들의 상태를 변경
-    @PutMapping("/payment/finish-settlement")
+    @PostMapping("/payment/finish-settlement")
     public ResponseEntity<Payment> updatePaymentStatus(@Valid @RequestBody PaymentIdRequest request) {
         PaymentIdCommand paymentIdCommand = new PaymentIdCommand(request.getPaymentId());
         return ResponseEntity.ok(this.requestPaymentUseCase.finishSettlement(paymentIdCommand));

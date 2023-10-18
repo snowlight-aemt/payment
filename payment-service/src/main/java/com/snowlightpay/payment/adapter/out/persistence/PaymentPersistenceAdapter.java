@@ -40,9 +40,15 @@ public class PaymentPersistenceAdapter implements CreatePaymentPort, GetPaymentP
 
     @Override
     public Payment updatePaymentBy(Long paymentId, int status) {
+        System.out.println(paymentId);
+        System.out.println(status);
+
+
         PaymentJpaEntity entity = this.paymentRepository.findById(paymentId)
                                         .orElseThrow(IllegalArgumentException::new);
+        System.out.println(entity.toString());
         entity.setPaymentStatus(status);
+        System.out.println(entity.toString());
         PaymentJpaEntity save = this.paymentRepository.save(entity);
 
         return this.paymentMapper.mapToDomainEntity(save);
