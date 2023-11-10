@@ -34,14 +34,16 @@ public class ModifyMembershipControllerTest {
                 "email",
                 "address",
                 true,
-                true));
+                true,
+                ""));
 
         ModifyMembershipRequest modifyMembershipRequest = new ModifyMembershipRequest(entity.getMembershipId().toString(),
                                                                                 "1-1",
                                                                                 "1-1",
                                                                                 "1-1",
                                                                                 false,
-                                                                                false);
+                                                                                false,
+                                                                                "");
 
 
         Membership membership = Membership.generateMember(
@@ -50,7 +52,8 @@ public class ModifyMembershipControllerTest {
                 new Membership.MembershipEmail("1-1"),
                 new Membership.MembershipAddress("1-1"),
                 new Membership.MembershipValid(false),
-                new Membership.MembershipCorp(false)
+                new Membership.MembershipCorp(false),
+                new Membership.MembershipRefreshToken("")
         );
 
         this.mockMvc.perform(MockMvcRequestBuilders.post(URL_UPDATE_MEMBERSHIP, entity.getMembershipId())

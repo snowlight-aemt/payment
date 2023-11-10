@@ -21,7 +21,8 @@ public class ModifyMembershipController {
                                                                         modifyMembershipRequest.getAddress(),
                                                                         modifyMembershipRequest.getEmail(),
                                                                         modifyMembershipRequest.isValid(),
-                                                                        modifyMembershipRequest.isCorp());
+                                                                        modifyMembershipRequest.isCorp(),
+                                                                        modifyMembershipRequest.getRefreshToken());
         return ResponseEntity.ok(modifyMembershipUseCase.modifyMembership(command));
     }
 }

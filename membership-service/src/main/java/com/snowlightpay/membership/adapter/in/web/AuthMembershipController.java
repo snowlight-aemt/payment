@@ -19,8 +19,8 @@ public class AuthMembershipController {
     @PostMapping("/membership/login")
     public ResponseEntity<JwtToken> loginMembership(AuthMembershipRequest request) {
         AuthMembershipCommand command = new AuthMembershipCommand(request.getMembershipId());
-        authMembershipUseCase.login(command);
+        JwtToken jwtToken = authMembershipUseCase.login(command);
 
-        return null;
+        return ResponseEntity.ok(jwtToken);
     }
 }

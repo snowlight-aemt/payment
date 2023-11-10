@@ -15,4 +15,5 @@ public class ModifyMembershipRequest {
 
     private boolean isValid;
     private boolean isCorp;
+    private String refreshToken;
 }

@@ -16,18 +16,22 @@ public class Membership {
     private final boolean isValid;
     private final boolean isCorp;
 
+    private final String refreshToken;
+
     public static Membership generateMember (MembershipId membershipId,
                                              MembershipName membershipName,
                                              MembershipEmail membershipEmail,
                                              MembershipAddress membershipAddress,
                                              MembershipValid membershipValid,
-                                             MembershipCorp membershipCorp) {
+                                             MembershipCorp membershipCorp,
+                                             MembershipRefreshToken membershipRefreshToken) {
         return new Membership(membershipId.getMembershipId(),
                 membershipName.getMembershipName(),
                 membershipEmail.getMembershipEmail(),
                 membershipAddress.getMembershipAddress(),
                 membershipValid.isMembershipValid(),
-                membershipCorp.isMembershipCorp());
+                membershipCorp.isMembershipCorp(),
+                membershipRefreshToken.getMembershipRefreshToken());
     }
 
     @Value
@@ -59,5 +63,10 @@ public class Membership {
     public static class MembershipCorp {
         public MembershipCorp(boolean membershipCorp) { this.membershipCorp = membershipCorp; }
         boolean membershipCorp;
+    }
+    @Value
+    public static class MembershipRefreshToken {
+        public MembershipRefreshToken(String membershipRefreshToken) { this.membershipRefreshToken = membershipRefreshToken; }
+        String membershipRefreshToken;
     }
 }

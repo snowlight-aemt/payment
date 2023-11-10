@@ -24,24 +24,27 @@ public class MembershipJpaEntity {
 
     private boolean isValid;
     private boolean isCorp;
+    private String refreshToken;
 
-    public MembershipJpaEntity(String name, String email, String address, boolean isValid, boolean isCorp) {
+    public MembershipJpaEntity(String name, String email, String address, boolean isValid, boolean isCorp, String refreshToken) {
         this.name = name;
         this.email = email;
         this.address = address;
         this.isValid = isValid;
         this.isCorp = isCorp;
+        this.refreshToken = refreshToken;
     }
 
     @Override
     public String toString() {
         return "MembershipJpaEntity{" +
-                "membershipId='" + membershipId + '\'' +
+                "membershipId=" + membershipId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", isValid=" + isValid +
                 ", isCorp=" + isCorp +
+                ", refreshToken='" + refreshToken + '\'' +
                 '}';
     }
 }

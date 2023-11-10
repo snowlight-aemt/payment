@@ -19,5 +19,6 @@ public interface RegisterMembershipPort {
                                          Membership.MembershipEmail membershipEmail,
                                          Membership.MembershipAddress membershipAddress,
                                          Membership.MembershipValid membershipValid,
-                                         Membership.MembershipCorp membershipCorp);
+                                         Membership.MembershipCorp membershipCorp,
+                                         Membership.MembershipRefreshToken membershipRefreshToken);
 }

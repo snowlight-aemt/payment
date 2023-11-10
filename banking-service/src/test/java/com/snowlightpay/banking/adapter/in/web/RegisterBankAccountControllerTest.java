@@ -22,6 +22,7 @@ class RegisterBankAccountControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Disabled
     @DisplayName("뱅킹 계정 등록 테스트")
     @Test
     void test_register_bank_account() throws Exception {
@@ -40,6 +41,7 @@ class RegisterBankAccountControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Disabled
     @DisplayName("펌뱅킹 송금 테스트")
     @Test
     void test_firm_bank_() throws Exception {

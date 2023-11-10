@@ -12,7 +12,8 @@ public class MembershipMapper {
                 new Membership.MembershipEmail(membershipJpaEntity.getEmail()),
                 new Membership.MembershipAddress(membershipJpaEntity.getAddress()),
                 new Membership.MembershipValid(membershipJpaEntity.isValid()),
-                new Membership.MembershipCorp(membershipJpaEntity.isCorp())
+                new Membership.MembershipCorp(membershipJpaEntity.isCorp()),
+                new Membership.MembershipRefreshToken(membershipJpaEntity.getRefreshToken())
         );
     }
 }

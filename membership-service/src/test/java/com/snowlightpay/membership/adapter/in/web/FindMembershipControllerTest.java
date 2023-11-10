@@ -31,7 +31,8 @@ public class FindMembershipControllerTest {
                                                                             "email",
                                                                             "address",
                                                                             true,
-                                                                            true);
+                                                                            true,
+                                                                            "");
         this.membershipRepository.save(membershipJpaEntity);
 
         Membership membership = membershipMapper.mapToDomainEntity(membershipJpaEntity);

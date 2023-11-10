@@ -25,7 +25,8 @@ public class MembershipPersistenceAdapter implements RegisterMembershipPort, Fin
                                                                 membershipEmail.getMembershipEmail(),
                                                                 membershipAddress.getMembershipAddress(),
                                                                 membershipValid.isMembershipValid(),
-                                                                membershipCorp.isMembershipCorp()));
+                                                                membershipCorp.isMembershipCorp(),
+                                                                membershipAddress.getMembershipAddress()));
     }
 
     @Override
@@ -40,7 +41,8 @@ public class MembershipPersistenceAdapter implements RegisterMembershipPort, Fin
                                                 Membership.MembershipEmail membershipEmail,
                                                 Membership.MembershipAddress membershipAddress,
                                                 Membership.MembershipValid membershipValid,
-                                                Membership.MembershipCorp membershipCorp) {
+                                                Membership.MembershipCorp membershipCorp,
+                                                Membership.MembershipRefreshToken membershipRefreshToken) {
         MembershipJpaEntity entity =
                 membershipRepository.findById(Long.parseLong(membershipId.getMembershipId()))
                                             .orElseThrow(IllegalArgumentException::new);
@@ -50,6 +52,7 @@ public class MembershipPersistenceAdapter implements RegisterMembershipPort, Fin
         entity.setAddress(membershipAddress.getMembershipAddress());
         entity.setValid(membershipValid.isMembershipValid());
         entity.setCorp(membershipCorp.isMembershipCorp());
+        entity.setRefreshToken(membershipRefreshToken.getMembershipRefreshToken());
 
         return membershipRepository.save(entity);
     }

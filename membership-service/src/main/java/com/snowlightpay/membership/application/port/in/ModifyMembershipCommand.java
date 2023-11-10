@@ -19,13 +19,16 @@ public class ModifyMembershipCommand extends SelfValidating<ModifyMembershipUseC
     private boolean valid;
     private boolean corp;
 
-    public ModifyMembershipCommand(String id, String name, String address, String email, boolean valid, boolean corp) {
+    private String refreshToken;
+
+    public ModifyMembershipCommand(String id, String name, String address, String email, boolean valid, boolean corp, String refreshToken) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.email = email;
         this.valid = valid;
         this.corp = corp;
+        this.refreshToken = refreshToken;
 
         this.validateSelf();
     }
