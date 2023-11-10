@@ -47,7 +47,8 @@ public class JwtTokenProvider implements AuthMembershipPort {
     @Override
     public boolean validateJwtToken(String jwtToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).build().parseClaimsJwt(jwtToken);
+            Jwts.parser().setSigningKey(jwtSecret)
+                    .build().parseClaimsJws(jwtToken);
             return true;
         } catch (ExpiredJwtException e) {
             // 만료 시간
@@ -65,7 +66,7 @@ public class JwtTokenProvider implements AuthMembershipPort {
 
     @Override
     public Membership.MembershipId parseMembershipIdFromToken(String jwtToken) {
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret).build().parseClaimsJwt(jwtToken).getBody();
+        Claims claims = Jwts.parser().setSigningKey(jwtSecret).build().parseClaimsJws(jwtToken).getBody();
         return new Membership.MembershipId(claims.getSubject());
     }
 }

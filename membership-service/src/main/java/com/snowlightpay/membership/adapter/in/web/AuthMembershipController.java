@@ -3,6 +3,7 @@ package com.snowlightpay.membership.adapter.in.web;
 import com.snowlightpay.common.WebAdapter;
 import com.snowlightpay.membership.application.port.in.AuthMembershipCommand;
 import com.snowlightpay.membership.application.port.in.AuthMembershipUseCase;
+import com.snowlightpay.membership.application.port.in.RefreshTokenCommand;
 import com.snowlightpay.membership.domain.JwtToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,5 +23,13 @@ public class AuthMembershipController {
         JwtToken jwtToken = authMembershipUseCase.login(command);
 
         return ResponseEntity.ok(jwtToken);
+    }
+
+    @PostMapping("/membership/refresh-token")
+    public ResponseEntity<JwtToken> refreshMembership(RefreshTokenRequest request) {
+        RefreshTokenCommand command = new RefreshTokenCommand(request.getRefreshToken());
+        JwtToken refresh = authMembershipUseCase.refresh(command);
+
+        return ResponseEntity.ok(refresh);
     }
 }
