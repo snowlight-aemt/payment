@@ -2,9 +2,9 @@ package com.snowlightpay.membership.application.service;
 
 import com.snowlightpay.common.UseCase;
 import com.snowlightpay.membership.adapter.out.persistence.MembershipJpaEntity;
+import com.snowlightpay.membership.adapter.out.persistence.MembershipMapper;
 import com.snowlightpay.membership.application.port.in.*;
 import com.snowlightpay.membership.application.port.out.AuthMembershipPort;
-import com.snowlightpay.membership.application.port.out.FindMembershipByAddressPort;
 import com.snowlightpay.membership.application.port.out.RegisterMembershipPort;
 import com.snowlightpay.membership.domain.JwtToken;
 import com.snowlightpay.membership.domain.Membership;
@@ -16,6 +16,7 @@ public class AuthMembershipService implements AuthMembershipUseCase {
     private final AuthMembershipPort authMembershipPort;
     private final RegisterMembershipPort registerMembershipPort;
     private final ModifyMembershipUseCase modifyMembershipUseCase;
+    private final MembershipMapper membershipMapper;
 
     @Override
     public JwtToken login(AuthMembershipCommand command) {
@@ -67,6 +68,26 @@ public class AuthMembershipService implements AuthMembershipUseCase {
                         new JwtToken.MembershipRefreshToken(refreshToken));
             }
         }
+        return null;
+    }
+
+    @Override
+    public boolean validate(ValidateTokenCommand command) {
+        return authMembershipPort.validateJwtToken(command.getJwtToken());
+    }
+
+    @Override
+    public Membership membership(JwtTokenCommand command) {
+        String jwtToken = command.getJwtToken();
+
+        boolean isValid = authMembershipPort.validateJwtToken(jwtToken);
+        if (isValid) {
+            Membership.MembershipId membershipId = authMembershipPort.parseMembershipIdFromToken(jwtToken);
+            MembershipJpaEntity membershipJpaEntity = registerMembershipPort.findMemberByMembershipId(membershipId);
+
+            return membershipMapper.mapToDomainEntity(membershipJpaEntity);
+        }
+
         return null;
     }
 }
