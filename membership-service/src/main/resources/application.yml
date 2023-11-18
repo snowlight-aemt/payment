@@ -17,3 +17,22 @@ springdoc:
     disable-swagger-default-url: true
     display-request-duration: true
     operations-sorter: alpha
+
+spring:
+  cloud:
+    vault:
+      token: hvs.CAESIN4w1VmFqUZ4T5kVRuXgbvlV7Nu8VPoIefOVfFKbyPYuGh4KHGh2cy5JU0kxbkpXSXh4VzRnZU1nYW9GODF3MGU
+      scheme: http
+      host: localhost
+      port: 8200
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: mysqluser
+    password: mysqlpw
+    url: jdbc:mysql://localhost:3306/snowlight_pay?useSSL=false&allowPublicKeyRetrieval=true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect

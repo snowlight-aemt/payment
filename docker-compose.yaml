@@ -38,6 +38,7 @@ services:
       - "8081:8080"
     depends_on:
       - mysql
+      - vault
     environment:
       - AXON_AXONSERVER_SERVERS=axon-server:8124
       - AXON_SERIALIZER_EVENTS=jackson
@@ -50,6 +51,10 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - KAFKA_CLUSTERS_BOOTSTRAPSERVERS=kafka:29092
       - LOGGING_TOPIC=snowlight.logging.out.stuout
+      - SPRING_CLOUD_VAULT_TOKEN=hvs.CAESILswsNlLPIB6Ohl3JV75saTj45yZwwkc9ED6IOmsIeTXGh4KHGh2cy5LTnhHQUdFclRvT0w2bElsRlBNN0NVSjg
+      - SPRING_CLOUD_VAULT_SCHEME=http
+      - SPRING_CLOUD_VAULT_HOST=vault
+      - SPRING_CLOUD_VAULT_PORT=8200
 
   banking-service:
     image: payment-banking-service:0.0.1-SNAPSHOT
@@ -295,6 +300,17 @@ services:
       - KAFKA_CLUSTERS_0_NAME=local
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
       - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+
+  vault:
+    image: vault:1.13.1
+    networks:
+      - snowlightpay_network
+    container_name: vault
+    ports:
+      - "8200:8200"
+    restart: always
+    cap_add:
+      - IPC_LOCK
 
 volumes:
   axonserver-data:
