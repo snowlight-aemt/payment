@@ -1,6 +1,8 @@
 package com.snowlightpay.membership.adapter.out.persistence;
 
 import com.snowlightpay.common.PersistenceAdapter;
+import com.snowlightpay.membership.adapter.out.vault.AESProvider;
+import com.snowlightpay.membership.adapter.out.vault.VaultAdapter;
 import com.snowlightpay.membership.application.port.out.FindMembershipByAddressPort;
 import com.snowlightpay.membership.application.port.out.RegisterMembershipPort;
 import com.snowlightpay.membership.domain.Membership;
@@ -15,14 +17,17 @@ public class MembershipPersistenceAdapter implements RegisterMembershipPort, Fin
     private final MembershipRepository membershipRepository;
     private final MembershipMapper membershipMapper;
 
+    private final VaultAdapter adapter;
+
     @Override
     public MembershipJpaEntity createMembership(Membership.MembershipName membershipName,
                                  Membership.MembershipEmail membershipEmail,
                                  Membership.MembershipAddress membershipAddress,
                                  Membership.MembershipValid membershipValid,
                                  Membership.MembershipCorp membershipCorp) {
+        String encrypt = adapter.encrypt(membershipEmail.getMembershipEmail());
         return membershipRepository.save(new MembershipJpaEntity(membershipName.getMembershipName(),
-                                                                membershipEmail.getMembershipEmail(),
+                                                                encrypt,
                                                                 membershipAddress.getMembershipAddress(),
                                                                 membershipValid.isMembershipValid(),
                                                                 membershipCorp.isMembershipCorp(),
@@ -31,8 +36,12 @@ public class MembershipPersistenceAdapter implements RegisterMembershipPort, Fin
 
     @Override
     public MembershipJpaEntity findMemberByMembershipId(Membership.MembershipId membershipId) {
-        return membershipRepository.findById(Long.parseLong(membershipId.getMembershipId()))
-                                        .orElseThrow(IllegalArgumentException::new);
+        MembershipJpaEntity membershipJpaEntity = membershipRepository.findById(Long.parseLong(membershipId.getMembershipId()))
+                .orElseThrow(IllegalArgumentException::new);
+
+        String encryptedMail = adapter.decrypt(membershipJpaEntity.getEmail());
+        membershipJpaEntity.setEmail(encryptedMail);
+        return membershipJpaEntity;
     }
 
     @Override

@@ -28,19 +28,6 @@ public class VaultConfig {
         vaultEndpoint.setScheme(vaultScheme);
 
         VaultTemplate vaultTemplate = new VaultTemplate(vaultEndpoint, () -> VaultToken.of(vaultToken));
-        // /kv-v2/data/encryted/data/dbkey   -->   key : GGGGGGGGGGGGGGGG
-        VaultKeyValueOperations vaultKeyValueOperations = vaultTemplate.opsForKeyValue(
-                                                        "/kv-v2/data/encryted",
-                                                            VaultKeyValueOperationsSupport.KeyValueBackend.KV_2);
-
-        System.out.println(vaultKeyValueOperations.toString());
-        VaultResponse dbkey = vaultKeyValueOperations.get("dbkey");
-        System.out.println("VaultResponse");
-        System.out.println(dbkey.toString());
-        String value = dbkey.getData().get("key").toString();
-        System.out.println("Value Starter");
-        System.out.println(value);
-        System.out.println("Value End");
         return vaultTemplate;
     }
 }
