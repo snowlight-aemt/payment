@@ -1,7 +1,5 @@
 package com.snowlightpay.membership.adapter.out.vault;
 
-import org.springframework.stereotype.Component;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;

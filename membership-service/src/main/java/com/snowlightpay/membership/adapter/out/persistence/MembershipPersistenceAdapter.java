@@ -1,7 +1,6 @@
 package com.snowlightpay.membership.adapter.out.persistence;
 
 import com.snowlightpay.common.PersistenceAdapter;
-import com.snowlightpay.membership.adapter.out.vault.AESProvider;
 import com.snowlightpay.membership.adapter.out.vault.VaultAdapter;
 import com.snowlightpay.membership.application.port.out.FindMembershipByAddressPort;
 import com.snowlightpay.membership.application.port.out.RegisterMembershipPort;
@@ -26,12 +25,17 @@ public class MembershipPersistenceAdapter implements RegisterMembershipPort, Fin
                                  Membership.MembershipValid membershipValid,
                                  Membership.MembershipCorp membershipCorp) {
         String encrypt = adapter.encrypt(membershipEmail.getMembershipEmail());
-        return membershipRepository.save(new MembershipJpaEntity(membershipName.getMembershipName(),
-                                                                encrypt,
-                                                                membershipAddress.getMembershipAddress(),
-                                                                membershipValid.isMembershipValid(),
-                                                                membershipCorp.isMembershipCorp(),
-                                                                membershipAddress.getMembershipAddress()));
+        MembershipJpaEntity entity = new MembershipJpaEntity(membershipName.getMembershipName(),
+                encrypt,
+                membershipAddress.getMembershipAddress(),
+                membershipValid.isMembershipValid(),
+                membershipCorp.isMembershipCorp(),
+                membershipAddress.getMembershipAddress());
+        membershipRepository.save(entity);
+
+        MembershipJpaEntity clone = entity.clone();
+        clone.setEmail(membershipEmail.getMembershipEmail());
+        return clone;
     }
 
     @Override
@@ -68,8 +72,16 @@ public class MembershipPersistenceAdapter implements RegisterMembershipPort, Fin
 
     @Override
     public List<Membership> findMemberByAddress(Membership.MembershipAddress membershipAddress) {
-        return membershipRepository.findByAddress(membershipAddress.getMembershipAddress())
-                .stream().map(membershipMapper::mapToDomainEntity).collect(Collectors.toList());
+        List<Membership> collect = membershipRepository.findByAddress(membershipAddress.getMembershipAddress())
+                .stream().map(v -> {
+                    MembershipJpaEntity clone = v.clone();
+                    String decrypt = adapter.decrypt(clone.getEmail());
+                    clone.setEmail(decrypt);
+                    return membershipMapper.mapToDomainEntity(clone);
+        }).collect(Collectors.toList());
+
+//        membershipMapper::mapToDomainEntity
+        return collect;
 
     }
 }

@@ -1,9 +1,6 @@
 package com.snowlightpay.membership.adapter.out.persistence;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "membership")
 public class MembershipJpaEntity {
     @GeneratedValue
@@ -33,6 +31,10 @@ public class MembershipJpaEntity {
         this.isValid = isValid;
         this.isCorp = isCorp;
         this.refreshToken = refreshToken;
+    }
+
+    public MembershipJpaEntity clone() {
+        return new MembershipJpaEntity(this.membershipId, this.name, this.email, this.address, this.isValid, this.isCorp, this.refreshToken);
     }
 
     @Override

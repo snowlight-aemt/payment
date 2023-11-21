@@ -21,7 +21,7 @@ springdoc:
 spring:
   cloud:
     vault:
-      token: hvs.CAESIN4w1VmFqUZ4T5kVRuXgbvlV7Nu8VPoIefOVfFKbyPYuGh4KHGh2cy5JU0kxbkpXSXh4VzRnZU1nYW9GODF3MGU
+      token: hvs.CAESIDkNhZ_Cn5mT-FE60z3AUr5k8ybgnGnTSipnnsYRbaDdGh4KHGh2cy5MTTZpWHkwNzR0ajN0ZlZ2emtyYlZQUWg
       scheme: http
       host: localhost
       port: 8200
