@@ -36,6 +36,9 @@ public class RemittanceRequestService implements RemittanceRequestUseCase {
 
         // 1. Membership Check (맴버 여부 확인)
         MembershipStatus membershipStatus = this.membershipPort.getMembership(command.getFromMembershipId());
+        if (!membershipStatus.isValid()) {
+            return null;
+        }
 
         // 2. Money Check (잔여 체크)
         MemberMoney memberMoney = this.moneyPort.getMemberMoney();
